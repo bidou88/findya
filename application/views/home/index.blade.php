@@ -33,7 +33,6 @@
 			var rene = new L.Icon({
 			    iconUrl: 'img/rene.png',
     			iconSize: [60, 60]
-			});
 
 			var girl = new L.Icon({
 			    iconUrl: 'img/girl.png',
