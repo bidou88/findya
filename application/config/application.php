@@ -13,7 +13,7 @@ return array(
 	|
 	*/
 
-	'url' => 'http://poulpe.heig-vd.ch/ogo13/julien/findya',
+	'url' => 'http://poulpe.heig-vd.ch/ogo13/julien/letsmeet',
 
 	/*
 	|--------------------------------------------------------------------------
