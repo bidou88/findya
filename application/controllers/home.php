@@ -33,11 +33,14 @@ class Home_Controller extends Base_Controller {
 	public function action_index()
 	{
 		$facebook = IoC::resolve('facebook-sdk');
-		$loginUrl = $facebook->getLoginUrl();
-		print_r($loginUrl);
-		$uid = $facebook->getUser();
-		print_r($uid);
-		return View::make('home.index');
+		$user = $facebook->getUser();
+		if ($user) {
+		  $url = $facebook->getLogoutUrl();
+		} else {
+		  $url = $facebook->getLoginUrl();
+		}
+
+		return View::make('index')->with('url', $url);
 	}
 
 }
