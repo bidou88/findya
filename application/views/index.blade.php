@@ -18,6 +18,7 @@
 		</div>
 
 		<div data-role="content">
+			<img src="img/logo.png" />
 			<a href="<?php echo $url; ?>">Login with Facebook</a>
 		</div>
 			
