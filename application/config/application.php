@@ -13,13 +13,8 @@ return array(
 	|
 	*/
 
-<<<<<<< HEAD
-	'url' => 'http://poulpe.heig-vd.ch/ogo13/julien/letsmeet',
-	'salu' => 'test',
-=======
 	'url' => 'http://poulpe.heig-vd.ch/ogo13/julien/findya',
 
->>>>>>> Jour 1
 	/*
 	|--------------------------------------------------------------------------
 	| Asset URL
