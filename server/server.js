@@ -46,13 +46,21 @@ function onClientDisconnect() {
 
 function onNewPerson(data) {
 
-	var mapId = data.mapId;
-	var newPerson = new Person(data.name, data.latitude, data.longitude);
+	var newPerson = new Person(data.mapId, data.name, data.latitude, data.longitude);
 	newPerson.id = this.id;
 
-	util.log("new person > mapId: " +mapId+ " id: " +newPerson.id+ " name: " +newPerson.getName()+ " latitude: " +newPerson.getLatitude()+ " longitude: " +newPerson.getLongitude());
-	this.emit("new person", {mapId: mapId, id: newPerson.id, name: newPerson.getName(), latitude: newPerson.getLatitude(), longitude: newPerson.getLongitude()});
+	persons.push(newPerson);
 
+	for (var i = 0; i < persons.length; i++) {
+		if(persons[i].getMapId()==data.mapId) {
+			this.emit("new person", {mapId: persons[i].mapId, id: persons[i].id, name: persons[i].getName(), latitude: persons[i].getLatitude(), longitude: persons[i].getLongitude()});
+		}
+	}
+
+	util.log("new person > mapId: " +data.mapId+ " id: " +newPerson.id+ " name: " +newPerson.getName()+ " latitude: " +newPerson.getLatitude()+ " longitude: " +newPerson.getLongitude());
+	this.broadcast.emit("new person", {mapId: data.mapId, id: newPerson.id, name: newPerson.getName(), latitude: newPerson.getLatitude(), longitude: newPerson.getLongitude()});
+
+	
 };
 
 // New player has joined

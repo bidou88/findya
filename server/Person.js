@@ -1,8 +1,13 @@
-var Person = function(name, latitude, longitude) {
-    var name = name,
+var Person = function(mapId, name, latitude, longitude) {
+    var mapId = mapId,
+        name = name,
         latitude = latitude,
         longitude = longitude,
         id;
+
+    var getMapId = function() {
+        return mapId;
+    };    
 
     var getName = function() {
         return name;
@@ -14,6 +19,10 @@ var Person = function(name, latitude, longitude) {
 
     var getLongitude = function() {
         return longitude;
+    };
+
+    var setMapId = function(newMapId) {
+        mapId = newMapId;
     };
 
     var setName = function(newName) {
@@ -29,9 +38,11 @@ var Person = function(name, latitude, longitude) {
     };
 
     return {
+        getMapId: getMapId,
         getName: getName,
         getLatitude: getLatitude,
         getLongitude: getLongitude,
+        setMapId: setMapId,
         setName: setName,
         setLatitude: setLatitude,
         setlongitude: setLongitude,
