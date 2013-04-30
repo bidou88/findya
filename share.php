@@ -67,12 +67,12 @@
 
 		function sendRequestViaMultiFriendSelector() {
 		  FB.ui({method: 'apprequests',
-		    message: 'Salut René'
+		    message: 'http://bit.ly/ZvotOG'
 		  }, requestCallback);
 		}
 
 		function requestCallback(response) {
-        	// Handle callback here
+        	console.log(response);
       	}
 
 		function loadFriends() {
