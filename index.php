@@ -18,38 +18,7 @@
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
 	<script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
 
-    <script type="text/javascript">
-		$(document).ready(function() {
-
-			//bit_url function
-			function bit_url(url) { 
-				var url=url;
-				var username="bidou88"; // bit.ly username
-				var key="R_bfb83a940e4102ea787d2a34c54cbd1b";
-				$.ajax({
-					url:"http://api.bit.ly/v3/shorten",
-					data:{longUrl:url,apiKey:key,login:username},
-					dataType:"jsonp",
-					success:function(v) {
-						var bit_url=v.data.url;
-						$("#result").html('<a href="'+bit_url+'" target="_blank">'+bit_url+'</a>');
-					}
-				});
-			}
-
-
-			$("#short").click(function() {
-				var url="http://renelataupe.com";
-				var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-				var urltest=urlRegex.test(url);
-				if(urltest){
-					bit_url(url);
-				} else {
-					alert("Bad URL");
-				}
-			});
-		});
-</script>
+	<script src="js/generateLink.js"></script>
 
 </head>
 <body>
@@ -62,7 +31,7 @@
 		<div data-role="content">
 			<div class="center">
 				<img src="img/logo.png" class="logo" />
-				<a href="#" data-role="button" data-theme="b" data-corners="false">Get your map</a>
+				<a id="getMap" href="#" data-role="button" data-theme="b" data-corners="false">Get your map</a>
 			</div>
 		</div>
 

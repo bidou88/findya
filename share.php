@@ -27,7 +27,9 @@
 
 		<div data-role="content">
 			<div class="centerShare">
-				<span id="link">http://bit.ly/staticnoob</span>
+				<div id="result">
+					<span id="link"><?php echo $_GET['url']?></span>
+				</div>
 				<div id="sharebtns" class="ui-grid-a">
 					<div class="ui-block-a"><a href="#" data-role="button" data-theme="b" data-corners="false" >Share</a></div>
 					<div class="ui-block-b"><a href="#" data-role="button" data-theme="b" data-corners="false">Tweet</a></div>

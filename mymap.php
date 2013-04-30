@@ -52,7 +52,7 @@
 		function onSocketConnected() {
 			console.log("Connected to socket server");
 			
-			socket.emit("new person", {name: "toto", x: 45454, y: 54545454});
+			socket.emit("new person", {mapId: 13, name: "toto", x: 45454, y: 54545454});
 		};
 
 		// Socket disconnected
