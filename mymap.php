@@ -85,7 +85,9 @@
 		};
 
 		function onPersonsOnMap(data) {
-			console.log("Coucou");
+			console.log("Add person on map");
+			var newLatLng = new L.LatLng(data.latitude, data.longitude);
+			L.marker(newLatLng).addTo(map);
 		};
 
 		function onNewPerson(data) {
