@@ -41,7 +41,8 @@
 
 		var map,
 			lat,
-			lng;
+			lng,
+			markers[];
 
 		function init() {
 			loadMap();
@@ -75,14 +76,23 @@
 			console.log("New person connected: "+data.id);
 
 			var newLatLng = new L.LatLng(data.latitude, data.longitude);
-			L.marker(newLatLng).addTo(map);
+			var marker = new L.Marker(newLatLng);
+			map.addLayer(marker);
+
+			markers.push(marker);
 		};
 
 		function onRemovePerson(data) {
 			console.log("New player removed: "+data.id);
 
 			var newLatLng = new L.LatLng(data.latitude, data.longitude);
-			L.marker(newLatLng).removeFrom(map);
+
+			for(var i = 0; i < markers.length; i++) {
+				if(markers[i].getLatLng() == newLatLng) {
+					map.removeLayer(markers[i]);
+				}
+			}
+			
 		};
 
 		function loadMap() {
@@ -97,7 +107,12 @@
 			function onLocationFound(e) {
 				lat = e.latlng.lat;
 				lng = e.latlng.lng;
-				L.marker(e.latlng).addTo(map);
+				
+				var newLatLng = new L.LatLng(lat, lng);
+				var marker = new L.Marker(newLatLng);
+				map.addLayer(marker);
+
+				markers.push(marker);
 
 				socket.emit("new person", {mapId: 13, name: "toto", latitude: lat, longitude: lng});
 			}
