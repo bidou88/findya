@@ -26,7 +26,7 @@ function getBitUrl() {
         dataType:"jsonp",
         success:function(v) {
             var bit_url=v.data.url;
-            window.location.href="http://localhost/findya/share.php?url="+bit_url;
+            window.location.href="http://poulpe.heig-vd.ch/ogo13/julien/findya/share.php?url="+bit_url;
         }
     });
 }
