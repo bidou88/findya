@@ -17,7 +17,7 @@
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
 	<script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
 
-	<script src="js/share.js"></script>
+	<script src="js/scripts.js"></script>
 
 </head>
 <body>
@@ -29,19 +29,19 @@
 
 		<div data-role="content">
 			<div class="centerShare">
-				<span id="link">
+				
 					<?php 
-						if(isset($_GET['url'])) {
-							echo $_GET['url'];
+						if(isset($_POST['url'])) { 
+							?><a id="link" href="<?php echo $_POST["url"]?>"><?php echo $_POST['url']; ?></a><?php
 						} else {
 							header('HTTP/1.0 404 Not Found');
 						}
 					?>
-				</span>
+				</a>
 				<div id="sharebtns" class="ui-grid-a">
 					<div class="ui-block-a"><a href="#" data-role="button" data-theme="b" data-corners="false" >Share</a></div>
 					<div class="ui-block-b"><a href="#" data-role="button" data-theme="b" data-corners="false">Tweet</a></div>
-					<div class="ui-block-a"><a href="#" data-role="button" data-theme="b" data-corners="false" >Mail</a></div>
+					<div class="ui-block-a"><a href="mailto:" data-role="button" data-theme="b" data-corners="false" rel="external">Mail</a></div>
 					<div class="ui-block-b"><a href="#" data-role="button" data-theme="b" data-corners="false" >Copy</a></div>
 				</div>
 			</div>

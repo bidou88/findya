@@ -38,6 +38,7 @@ html, body, #home, #content, #map {
 	margin-top: 15%;
 	font-size: 2em;
 	font-style: bold;
+	text-decoration: none;
 }
 
 #copybtn {

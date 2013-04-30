@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
 	<script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
 
-	<script src="js/generateLink.js"></script>
+	<script src="js/scripts.js"></script>
 
 </head>
 <body>
@@ -31,7 +31,7 @@
 		<div data-role="content">
 			<div class="center">
 				<img src="img/logo.png" class="logo" />
-				<a id="getMap" href="#" data-role="button" data-theme="b" data-corners="false">Get your map!</a>
+				<a id="getMap" data-role="button" data-theme="b" data-corners="false">Get your map!</a>
 			</div>
 		</div>
 
