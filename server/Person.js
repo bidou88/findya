@@ -1,5 +1,6 @@
-var Person = function(lat, long) {
-    var latitude = latitude,
+var Person = function(name, lat, long) {
+    var name = name,
+        latitude = latitude,
         longitude = longitude,
         id;
     
