@@ -34,7 +34,7 @@
 			map,
 			lat,
 			lng,
-			markers[];
+			markers = [];
 
 		$(document).ready(function($) {
 			<?php
@@ -87,7 +87,10 @@
 		function onPersonsOnMap(data) {
 			console.log("Add person on map");
 			var newLatLng = new L.LatLng(data.latitude, data.longitude);
-			L.marker(newLatLng).addTo(map);
+			var marker = new L.Marker(newLatLng);
+			map.addLayer(marker);
+
+			markers.push(marker);
 		};
 
 		function onNewPerson(data) {
@@ -101,12 +104,11 @@
 		};
 
 		function onRemovePerson(data) {
-			console.log("New player removed: "+data.id);
-
+			console.log("Person removed: " +data.id);
 			var newLatLng = new L.LatLng(data.latitude, data.longitude);
 
 			for(var i = 0; i < markers.length; i++) {
-				if(markers[i].getLatLng() == newLatLng) {
+				if(markers[i].getLatLng().lat == data.latitude && markers[i].getLatLng().lng == data.longitude) {
 					map.removeLayer(markers[i]);
 				}
 			}

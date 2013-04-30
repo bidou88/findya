@@ -1,8 +1,8 @@
-var Person = function(mapId, name, latitude, longitude) {
+var Person = function(mapId, name, lat, lng) {
     var mapId = mapId,
         name = name,
-        latitude = latitude,
-        longitude = longitude,
+        latitude = lat,
+        longitude = lng,
         id;
 
     var getMapId = function() {

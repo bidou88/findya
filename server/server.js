@@ -9,7 +9,7 @@ function init() {
 
 	persons = [];
 
-	socket = io.listen(8000);
+	socket = io.listen(8000	);
 
 	socket.configure(function() {
 		socket.set("transports", ["websocket"]);
@@ -46,9 +46,7 @@ function onClientDisconnect() {
 
 	persons.splice(persons.indexOf(person), 1);
 
-	util.log(person.mapId);
-
-	this.broadcast.emit("remove person", {mapId: person.getMapId(), id: person.id, name: person.getName(), latitude: person.getLatitude(), longitude: person.getLongitude()});
+	this.broadcast.emit("remove person", {mapId: person.mapId, id: person.id, name: person.name, latitude: person.getLatitude(), longitude: person.getLongitude()});
 
 };
 
@@ -62,11 +60,11 @@ function onNewPerson(data) {
 	for (var i = 0; i < persons.length; i++) {
 		if(persons[i].getMapId()==data.mapId) {
 			util.log("Server envoi to " +newPerson.id+ " sur map "+data.mapId+ " l'ID suivant "+persons[i].id);
-			this.emit("add_person", {mapId: persons[i].getMapId(), id: persons[i].id, name: persons[i].getName(), latitude: persons[i].getLatitude(), longitude: persons[i].getLongitude()});
+			this.emit("add_person", {mapId: persons[i].mapId, id: persons[i].id, name: persons[i].name, latitude: persons[i].getLatitude(), longitude: persons[i].getLongitude()});
 		}
 	}
 	util.log("Server envoi to : ALL sauf " +newPerson.id);
-	this.broadcast.emit("new person", {mapId: newPerson.getMapId(), id: newPerson.id, name: newPerson.getName(), latitude: newPerson.getLatitude(), longitude: newPerson.getLongitude()});
+	this.broadcast.emit("new person", {mapId: newPerson.mapId, id: newPerson.id, name: newPerson.name, latitude: newPerson.getLatitude(), longitude: newPerson.getLongitude()});
 	
 };
 
