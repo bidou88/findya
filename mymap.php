@@ -29,8 +29,9 @@
 	<div id="fb-root"></div>
 	<script>
 
-		var lat;
-		var lng;
+		var map,
+			lat,
+			lng;
 
 		function init() {
 			loadMap();
@@ -55,12 +56,7 @@
 		// Socket connected
 		function onSocketConnected() {
 			console.log("Connected to socket server");
-			
-<<<<<<< HEAD
-			socket.emit("new person", {mapId: 13, name: "toto", x: 45454, y: 54545454});
-=======
-			socket.emit("new person", {mapId: 212321, name: "toto", latitude: 45454, longitude: 54545454});
->>>>>>> HEllo
+
 		};
 
 		// Socket disconnected
@@ -71,6 +67,16 @@
 		function onNewPerson(data) {
 			console.log("New person connected: "+data.id);
 			console.log(data.name + data.mapId);
+
+			<?php
+				if($_REQUEST['mapId']) {
+			?>
+					var mapId = <?php echo ($_REQUEST['mapId']); ?>;
+			<?php
+				}
+			?>
+			var newLatLng = new L.LatLng(data.latitude+0.003, data.longitude);
+			L.marker(newLatLng).addTo(map);
 		};
 
 		function onRemovePerson(data) {
@@ -78,7 +84,7 @@
 		};
 
 		function loadMap() {
-    		var map = L.map('map');
+    		map = L.map('map');
 	    	L.tileLayer('http://a.tiles.mapbox.com/v3/bidou88.map-iukweyr5/{z}/{x}/{y}.png', {
 	    		attribution: 'MapBox',
     			maxZoom: 18
@@ -90,6 +96,7 @@
 				lat = e.latlng.lat;
 				lng = e.latlng.lng;
 				L.marker(e.latlng).addTo(map);
+				socket.emit("new person", {mapId: 13, name: "toto", latitude: lat, longitude: lng});
 			}
 
 			map.on('locationfound', onLocationFound);
