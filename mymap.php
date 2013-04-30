@@ -29,7 +29,11 @@
 	<div id="fb-root"></div>
 	<script>
 
+		var lat;
+		var lng;
+
 		function init() {
+			loadMap();
 			socket = io.connect("http://localhost", {port: 8000, transports: ["websocket"]});
 			setEventHandlers();
 		}
@@ -78,6 +82,8 @@
 			map.locate({setView: true, maxZoom: 15});
 
 			function onLocationFound(e) {
+				lat = e.latlng.lat;
+				lng = e.latlng.lng;
 				L.marker(e.latlng).addTo(map);
 			}
 
