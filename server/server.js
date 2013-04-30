@@ -27,8 +27,8 @@ var setEventHandlers = function() {
 };
 
 function onSocketConnection(client) {
-	
-	util.log("Person has connected: "+client.id);
+
+	util.log("Person is connected: "+client.id);
 
 	client.on("disconnect", onClientDisconnect);
 
@@ -40,7 +40,13 @@ function onSocketConnection(client) {
 
 function onClientDisconnect() {
 
-	util.log("Person has disconnected: "+this.id);
+	util.log("Person is disconnected: "+this.id);
+
+	var person = personById(this.id);
+
+	persons.splice(persons.indexOf(person), 1);
+
+	this.broadcast.emit("remove person", {mapId: person.getMapId(), id: person.id, name: person.getName(), latitude: person.getLatitude(), longitude: person.getLongitude()});
 
 };
 
@@ -53,20 +59,25 @@ function onNewPerson(data) {
 
 	for (var i = 0; i < persons.length; i++) {
 		if(persons[i].getMapId()==data.mapId) {
-			this.emit("new person", {mapId: persons[i].mapId, id: persons[i].id, name: persons[i].getName(), latitude: persons[i].getLatitude(), longitude: persons[i].getLongitude()});
+			this.emit("persons on map", {mapId: persons[i].getMapId(), id: persons[i].id, name: persons[i].getName(), latitude: persons[i].getLatitude(), longitude: persons[i].getLongitude()});
 		}
 	}
 
-	util.log("new person > mapId: " +data.mapId+ " id: " +newPerson.id+ " name: " +newPerson.getName()+ " latitude: " +newPerson.getLatitude()+ " longitude: " +newPerson.getLongitude());
-	this.broadcast.emit("new person", {mapId: data.mapId, id: newPerson.id, name: newPerson.getName(), latitude: newPerson.getLatitude(), longitude: newPerson.getLongitude()});
-
+	this.broadcast.emit("new person", {mapId: newPerson.getMapId(), id: newPerson.id, name: newPerson.getName(), latitude: newPerson.getLatitude(), longitude: newPerson.getLongitude()});
 	
 };
 
-// New player has joined
 function onRemovePerson(data) {
 	
 
+};
+
+function personById(id) {
+	for (var i = 0; i < persons.length; i++) {
+		if (players[i].id == id)
+			return players[i];
+	};
+	return false;
 };
 
 init();

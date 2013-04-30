@@ -25,7 +25,7 @@
 	<div data-role="page" id="home">
 	
 		<div data-role="header">
-			<h1>Find your friends!</h1>
+			<h1>findya</h1>
 		</div>
 
 		<div data-role="content">
