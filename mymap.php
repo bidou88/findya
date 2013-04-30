@@ -67,7 +67,7 @@
 			console.log(data.name + data.mapId);
 
 			<?php
-				if($_REQUEST['mapId']) {
+				if(isset($_REQUEST['mapId'])) {
 			?>
 					var mapId = <?php echo ($_REQUEST['mapId']); ?>;
 			<?php

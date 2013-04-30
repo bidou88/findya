@@ -17,6 +17,8 @@
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
 	<script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
 
+	<script src="js/share.js"></script>
+
 </head>
 <body>
 	<div data-role="page" id="home">
@@ -27,9 +29,15 @@
 
 		<div data-role="content">
 			<div class="centerShare">
-				<div id="result">
-					<span id="link"><?php echo $_GET['url']?></span>
-				</div>
+				<span id="link">
+					<?php 
+						if(isset($_GET['url'])) {
+							echo $_GET['url'];
+						} else {
+							header('HTTP/1.0 404 Not Found');
+						}
+					?>
+				</span>
 				<div id="sharebtns" class="ui-grid-a">
 					<div class="ui-block-a"><a href="#" data-role="button" data-theme="b" data-corners="false" >Share</a></div>
 					<div class="ui-block-b"><a href="#" data-role="button" data-theme="b" data-corners="false">Tweet</a></div>

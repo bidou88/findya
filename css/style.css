@@ -17,12 +17,12 @@ html, body, #home, #content, #map {
 	margin: 40px auto;
 }
 
-.centerShare {
+.centerShare a{
 	text-align: center;
-	margin-top: 20%;
+	margin-top: 5%;
 }
 
-.centerShare a {
+#sharebtns a {
 	width: 100px;
 	height: 100px;
 	margin: 0 0 4px 0;
