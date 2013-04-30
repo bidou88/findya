@@ -34,8 +34,7 @@
 
 		function init() {
 			loadMap();
-			socket = io.connect("http://localhost", {port: 8000, transports: ["websocket"]});
-			setEventHandlers();
+			
 		}
 
 		var setEventHandlers = function() {
@@ -56,11 +55,7 @@
 		function onSocketConnected() {
 			console.log("Connected to socket server");
 			
-<<<<<<< HEAD
-			socket.emit("new person", {mapId: 13, name: "toto", x: 45454, y: 54545454});
-=======
-			socket.emit("new person", {mapId: 212321, name: "toto", latitude: 45454, longitude: 54545454});
->>>>>>> HEllo
+			socket.emit("new person", {mapId: 13, name: "toto", latitude: lat, longitude: lng});
 		};
 
 		// Socket disconnected
@@ -90,6 +85,8 @@
 				lat = e.latlng.lat;
 				lng = e.latlng.lng;
 				L.marker(e.latlng).addTo(map);
+				socket = io.connect("http://localhost", {port: 8000, transports: ["websocket"]});
+				setEventHandlers();
 			}
 
 			map.on('locationfound', onLocationFound);
