@@ -21,7 +21,7 @@
 		var socket;
 	</script>
 
-	<script src="http://localhost:8000/socket.io/socket.io.js"></script>
+	<script src="http://10.192.82.181:8000/socket.io/socket.io.js"></script>
 
 </head>
 <body>
@@ -29,22 +29,31 @@
 	<div id="fb-root"></div>
 	<script>
 
-		<?php
-			if(isset($_REQUEST['mapId'])) {
-		?>
-			var mapId = <?php echo ($_REQUEST['mapId']); ?>;
-		<?php
-			} else {
-				header('HTTP/1.0 404 Not Found');
-			}
-		?>
-
-		var map,
+		var socket,
+			mapId,
+			map,
 			lat,
 			lng,
 			markers[];
 
+		$(document).ready(function($) {
+			<?php
+				if(isset($_REQUEST['mapId'])) {
+			?>
+				mapId = <?php echo ($_REQUEST['mapId']); ?>;
+				alert(mapId);
+			<?php
+				} else {
+					header('HTTP/1.0 404 Not Found');
+				}
+			?>
+
+			init();
+		});
+
 		function init() {
+			socket = io.connect("http://10.192.82.181", {port: 8000, transports: ["websocket"]});
+			setEventHandlers();
 			loadMap();
 		}
 
@@ -58,6 +67,9 @@
 			// New player message received
 			socket.on("new person", onNewPerson);
 
+			// New player message received
+			socket.on("add_person", onPersonsOnMap);
+
 			// Player removed message received
 			socket.on("remove person", onRemovePerson);
 		};
@@ -70,6 +82,10 @@
 		// Socket disconnected
 		function onSocketDisconnect() {
 			console.log("Disconnected from socket server");
+		};
+
+		function onPersonsOnMap(data) {
+			console.log("Coucou");
 		};
 
 		function onNewPerson(data) {
@@ -114,7 +130,7 @@
 
 				markers.push(marker);
 
-				socket.emit("new person", {mapId: 13, name: "toto", latitude: lat, longitude: lng});
+				socket.emit("new person", {mapId: mapId, name: "toto", latitude: lat, longitude: lng});
 			}
 
 			map.on('locationfound', onLocationFound);
@@ -126,6 +142,7 @@
 			map.on('locationerror', onLocationError);
 		}
 
+		/*
 		function login() {
 			FB.login(function(response) {
 			    if (response.authResponse) {
@@ -169,6 +186,7 @@
 	     js.src = "//connect.facebook.net/fr_FR/all.js";
 	     ref.parentNode.insertBefore(js, ref);
 	   }(document));
+	*/
 	</script>
 
 	<div data-role="page" id="home">
