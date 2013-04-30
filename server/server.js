@@ -47,6 +47,7 @@ var setEventHandlers = function() {
 
 // New socket connection
 function onSocketConnection(client) {
+	
 	util.log("New persons has connected: "+client.id);
 
 	// Listen for client disconnected
@@ -80,6 +81,7 @@ function onClientDisconnect() {
 
 // New player has joined
 function onNewPerson(data) {
+	util.log(data.name);
 	this.broadcast.emit("new person", {});
 };
 
