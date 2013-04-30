@@ -65,10 +65,7 @@
 				<a href="#" data-role="button" data-theme="b" data-corners="false">Get your map</a>
 			</div>
 		</div>
-			<!--<div data-role="fieldcontain">
-					<span id="link" data-inline="true">http://bit.ly/staticnoob</span>
-					<a id="copybtn" class="typicn" href="#" data-mini="true" data-role="button"  data-inline="true">e</a>
-				</div>-->
+
 	</div>
 </body>
 </html>

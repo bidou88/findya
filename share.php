@@ -17,132 +17,23 @@
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
 	<script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
 
-    <script type="text/javascript">
-		$(document).ready(function() {
-
-			//bit_url function
-			function bit_url(url) { 
-				var url=url;
-				var username="bidou88"; // bit.ly username
-				var key="R_bfb83a940e4102ea787d2a34c54cbd1b";
-				$.ajax({
-					url:"http://api.bit.ly/v3/shorten",
-					data:{longUrl:url,apiKey:key,login:username},
-					dataType:"jsonp",
-					success:function(v) {
-						var bit_url=v.data.url;
-						$("#result").html('<a href="'+bit_url+'" target="_blank">'+bit_url+'</a>');
-					}
-				});
-			}
-
-
-			$("#short").click(function() {
-				var url="http://renelataupe.com";
-				var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-				var urltest=urlRegex.test(url);
-				if(urltest){
-					bit_url(url);
-				} else {
-					alert("Bad URL");
-				}
-			});
-		});
-</script>
-
 </head>
 <body>
-
-	<div id="fb-root"></div>
-	<script>
-		function login() {
-			FB.login(function(response) {
-			    if (response.authResponse) {
-			        // connected
-			    } else {
-			        // cancelled
-			    }
-		    });
-		}
-
-		function sendRequestViaMultiFriendSelector() {
-		  FB.ui({method: 'apprequests',
-		    message: 'http://bit.ly/ZvotOG'
-		  }, requestCallback);
-		}
-
-		function requestCallback(response) {
-        	console.log(response);
-      	}
-
-		function loadFriends() {
-    		FB.api('/me/friends', function(response) {
-        		console.log(response);
-        		if(response.data) {
-            		$.each(response.data,function(index,friend) {
-                		$('#listoffriends').append($("<option></option>").attr("value",friend.id).text(friend.name));
-            		});
-            		$('#listoffriends').selectmenu('refresh');
-
-        		} else {
-            		alert("Error!");
-        		}
-    		});
-		}
-
-	  window.fbAsyncInit = function() {
-	    FB.init({
-	      appId      : '158880540947821', // App ID
-	      channelUrl : 'channel.html', // Channel File
-	      status     : true, // check login status
-	      cookie     : true, // enable cookies to allow the server to access the session
-	      xfbml      : true  // parse XFBML
-	    });
-
-	    FB.getLoginStatus(function(response) {
-			if (response.status === 'connected') {
-		    	// connected
-		    	alert('connected');
-		    	sendRequestViaMultiFriendSelector();
-		    	//loadFriends();
-			} else if (response.status === 'not_authorized') {
-		    	// not_authorized
-		    	login();
-		  	} else {
-		    	// not_logged_in
-		    	login();
-		  	}
-		});
-
-	  };
-
-	  // Load the SDK Asynchronously
-	  (function(d){
-	     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-	     if (d.getElementById(id)) {return;}
-	     js = d.createElement('script'); js.id = id; js.async = true;
-	     js.src = "//connect.facebook.net/fr_FR/all.js";
-	     ref.parentNode.insertBefore(js, ref);
-	   }(document));
-	</script>
-
 	<div data-role="page" id="home">
 	
 		<div data-role="header">
-			<h1>findya</h1>
+			<h1>Find your friends!</h1>
 		</div>
 
 		<div data-role="content">
-			<div class="center">
-				<img src="img/logo.png" class="logo" />
-			</div>
-			<select name="select_friends" id="listoffriends" multiple="multiple" data-native-menu="false" tabindex="-1">
-				<option data-placeholder="true">Select some friends</option>
-			</select>
-			<div class="center">
-				<a href="<?php echo $url; ?>">Login with Facebook</a>
-				<div id="result"></div>
-				<input type="submit" id="short" value="Submit"/> 
+			<div class="centerShare">
+				<span id="link">http://bit.ly/staticnoob</span>
+				<div id="sharebtns" class="ui-grid-a">
+					<div class="ui-block-a"><a href="#" data-role="button" data-theme="b" data-corners="false" >Share</a></div>
+					<div class="ui-block-b"><a href="#" data-role="button" data-theme="b" data-corners="false">Tweet</a></div>
+					<div class="ui-block-a"><a href="#" data-role="button" data-theme="b" data-corners="false" >Mail</a></div>
+					<div class="ui-block-b"><a href="#" data-role="button" data-theme="b" data-corners="false" >Copy</a></div>
+				</div>
 			</div>
 		</div>
 			

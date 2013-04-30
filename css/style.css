@@ -11,28 +11,44 @@ html, body, #home, #content, #map {
 	text-align: center;
 }
 
-.centerGenerate {
-	text-align: center;
-	margin-top: 20%;
-}
-
 .center a {
 	width: 150px;
 	height: 150px;
 	margin: 40px auto;
 }
 
+.centerShare {
+	text-align: center;
+	margin-top: 20%;
+}
+
+.centerShare a {
+	width: 100px;
+	height: 100px;
+	padding: auto;
+	margin: auto;
+}
+
 #link {
-	text-align: left;
+	text-align: center;
 	margin-top: 5%;
+	font-size: 2em;
+	font-style: bold;
 }
 
 #copybtn {
 	text-align: right;
 }
 
+#sharebtns {
+	width: 215px;
+	height: 210px;
+	margin: 30% auto;
+}
+
 img.logo {
 	max-width: 100%;
 	margin:0 auto 0 auto;
 }
+
 
