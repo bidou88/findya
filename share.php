@@ -65,6 +65,31 @@
 		    });
 		}
 
+		function sendRequestViaMultiFriendSelector() {
+		  FB.ui({method: 'apprequests',
+		    message: 'http://bit.ly/ZvotOG'
+		  }, requestCallback);
+		}
+
+		function requestCallback(response) {
+        	console.log(response);
+      	}
+
+		function loadFriends() {
+    		FB.api('/me/friends', function(response) {
+        		console.log(response);
+        		if(response.data) {
+            		$.each(response.data,function(index,friend) {
+                		$('#listoffriends').append($("<option></option>").attr("value",friend.id).text(friend.name));
+            		});
+            		$('#listoffriends').selectmenu('refresh');
+
+        		} else {
+            		alert("Error!");
+        		}
+    		});
+		}
+
 	  window.fbAsyncInit = function() {
 	    FB.init({
 	      appId      : '158880540947821', // App ID
@@ -78,6 +103,8 @@
 			if (response.status === 'connected') {
 		    	// connected
 		    	alert('connected');
+		    	sendRequestViaMultiFriendSelector();
+		    	//loadFriends();
 			} else if (response.status === 'not_authorized') {
 		    	// not_authorized
 		    	login();
@@ -94,7 +121,7 @@
 	     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
 	     if (d.getElementById(id)) {return;}
 	     js = d.createElement('script'); js.id = id; js.async = true;
-	     js.src = "//connect.facebook.net/en_US/all.js";
+	     js.src = "//connect.facebook.net/fr_FR/all.js";
 	     ref.parentNode.insertBefore(js, ref);
 	   }(document));
 	</script>
@@ -109,10 +136,8 @@
 			<div class="center">
 				<img src="img/logo.png" class="logo" />
 			</div>
-			<select name="select-choice-9" id="select-choice-9" multiple="multiple" data-native-menu="false" tabindex="-1">
+			<select name="select_friends" id="listoffriends" multiple="multiple" data-native-menu="false" tabindex="-1">
 				<option data-placeholder="true">Select some friends</option>
-				<option value="standard">Standard: 7 day</option>
-				
 			</select>
 			<div class="center">
 				<a href="<?php echo $url; ?>">Login with Facebook</a>
