@@ -29,13 +29,22 @@
 	<div id="fb-root"></div>
 	<script>
 
+		<?php
+			if(isset($_REQUEST['mapId'])) {
+		?>
+			var mapId = <?php echo ($_REQUEST['mapId']); ?>;
+		<?php
+			} else {
+				header('HTTP/1.0 404 Not Found');
+			}
+		?>
+
 		var map,
 			lat,
 			lng;
 
 		function init() {
 			loadMap();
-			
 		}
 
 		var setEventHandlers = function() {
@@ -64,21 +73,16 @@
 
 		function onNewPerson(data) {
 			console.log("New person connected: "+data.id);
-			console.log(data.name + data.mapId);
 
-			<?php
-				if(isset($_REQUEST['mapId'])) {
-			?>
-					var mapId = <?php echo ($_REQUEST['mapId']); ?>;
-			<?php
-				}
-			?>
-			var newLatLng = new L.LatLng(data.latitude+0.003, data.longitude);
+			var newLatLng = new L.LatLng(data.latitude, data.longitude);
 			L.marker(newLatLng).addTo(map);
 		};
 
 		function onRemovePerson(data) {
 			console.log("New player removed: "+data.id);
+
+			var newLatLng = new L.LatLng(data.latitude, data.longitude);
+			L.marker(newLatLng).removeFrom(map);
 		};
 
 		function loadMap() {

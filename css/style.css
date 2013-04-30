@@ -29,8 +29,9 @@ html, body, #home, #content, #map {
 }
 
 #link {
+	display: block;
 	text-align: center;
-	margin-top: 5%;
+	margin-top: 15%;
 	font-size: 2em;
 	font-style: bold;
 }
