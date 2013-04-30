@@ -31,7 +31,7 @@
 		<div data-role="content">
 			<div class="center">
 				<img src="img/logo.png" class="logo" />
-				<a id="getMap" href="#" data-role="button" data-theme="b" data-corners="false">Get your map</a>
+				<a id="getMap" href="#" data-role="button" data-theme="b" data-corners="false">Get your map!</a>
 			</div>
 		</div>
 

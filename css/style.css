@@ -17,6 +17,10 @@ html, body, #home, #content, #map {
 	margin: 40px auto;
 }
 
+#getMap .ui-btn-inner {
+	padding-top: 60px;
+}
+
 .centerShare a{
 	text-align: center;
 	margin-top: 5%;

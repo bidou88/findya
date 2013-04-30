@@ -46,6 +46,8 @@ function onClientDisconnect() {
 
 	persons.splice(persons.indexOf(person), 1);
 
+	util.log(person.mapId);
+
 	this.broadcast.emit("remove person", {mapId: person.getMapId(), id: person.id, name: person.getName(), latitude: person.getLatitude(), longitude: person.getLongitude()});
 
 };
@@ -59,10 +61,11 @@ function onNewPerson(data) {
 
 	for (var i = 0; i < persons.length; i++) {
 		if(persons[i].getMapId()==data.mapId) {
-			this.emit("persons on map", {mapId: persons[i].getMapId(), id: persons[i].id, name: persons[i].getName(), latitude: persons[i].getLatitude(), longitude: persons[i].getLongitude()});
+			util.log("Server envoi to " +newPerson.id+ " sur map "+data.mapId+ " l'ID suivant "+persons[i].id);
+			this.emit("add_person", {mapId: persons[i].getMapId(), id: persons[i].id, name: persons[i].getName(), latitude: persons[i].getLatitude(), longitude: persons[i].getLongitude()});
 		}
 	}
-
+	util.log("Server envoi to : ALL sauf " +newPerson.id);
 	this.broadcast.emit("new person", {mapId: newPerson.getMapId(), id: newPerson.id, name: newPerson.getName(), latitude: newPerson.getLatitude(), longitude: newPerson.getLongitude()});
 	
 };
@@ -74,8 +77,9 @@ function onRemovePerson(data) {
 
 function personById(id) {
 	for (var i = 0; i < persons.length; i++) {
-		if (players[i].id == id)
-			return players[i];
+		if (persons[i].id == id) {
+			return persons[i];
+		}	
 	};
 	return false;
 };
