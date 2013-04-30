@@ -17,8 +17,123 @@
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
 	<script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
 
+	<script>
+		var socket;
+	</script>
+
+	<script src="http://localhost:8000/socket.io/socket.io.js"></script>
+
 </head>
 <body>
+
+	<div id="fb-root"></div>
+	<script>
+
+		function init() {
+			socket = io.connect("http://localhost", {port: 8000, transports: ["websocket"]});
+			setEventHandlers();
+		}
+
+		var setEventHandlers = function() {
+			// Socket connection successful
+			socket.on("connect", onSocketConnected);
+
+			// Socket disconnection
+			socket.on("disconnect", onSocketDisconnect);
+
+			// New player message received
+			socket.on("new person", onNewPerson);
+
+			// Player removed message received
+			socket.on("remove person", onRemovePerson);
+		};
+
+		// Socket connected
+		function onSocketConnected() {
+			console.log("Connected to socket server");
+			// Send local player data to the game server
+			//socket.emit("new player", {x: localPlayer.getX(), y: localPlayer.getY()});
+		};
+
+		// Socket disconnected
+		function onSocketDisconnect() {
+			console.log("Disconnected from socket server");
+		};
+
+		function onNewPerson(data) {
+			console.log("New person connected: "+data.id);
+		};
+
+		function onRemovePerson(data) {
+			console.log("New player removed: "+data.id);
+		};
+
+		function loadMap() {
+    		var map = L.map('map');
+	    	L.tileLayer('http://a.tiles.mapbox.com/v3/bidou88.map-iukweyr5/{z}/{x}/{y}.png', {
+	    		attribution: 'MapBox',
+    			maxZoom: 18
+			}).addTo(map);
+
+			map.locate({setView: true, maxZoom: 15});
+
+			function onLocationFound(e) {
+				L.marker(e.latlng).addTo(map);
+			}
+
+			map.on('locationfound', onLocationFound);
+
+			function onLocationError(e) {
+			    alert(e.message);
+			}
+
+			map.on('locationerror', onLocationError);
+		}
+
+		function login() {
+			FB.login(function(response) {
+			    if (response.authResponse) {
+			        // connected
+			    } else {
+			        // cancelled
+			    }
+		    });
+		}
+
+	  window.fbAsyncInit = function() {
+	    FB.init({
+	      appId      : '158880540947821', // App ID
+	      channelUrl : 'channel.html', // Channel File
+	      status     : true, // check login status
+	      cookie     : true, // enable cookies to allow the server to access the session
+	      xfbml      : true  // parse XFBML
+	    });
+
+	    FB.getLoginStatus(function(response) {
+			if (response.status === 'connected') {
+		    	// connected
+		    	alert('connected');
+		    	init();
+			} else if (response.status === 'not_authorized') {
+		    	// not_authorized
+		    	login();
+		  	} else {
+		    	// not_logged_in
+		    	login();
+		  	}
+		});
+
+	  };
+
+	  // Load the SDK Asynchronously
+	  (function(d){
+	     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+	     if (d.getElementById(id)) {return;}
+	     js = d.createElement('script'); js.id = id; js.async = true;
+	     js.src = "//connect.facebook.net/fr_FR/all.js";
+	     ref.parentNode.insertBefore(js, ref);
+	   }(document));
+	</script>
 
 	<div data-role="page" id="home">
 	
@@ -32,31 +147,5 @@
 		</div>
 			
 	</div>
-
-	<script>
-    	$('document').ready(function(){
-
-    		var map = L.map('map');
-	    	L.tileLayer('http://a.tiles.mapbox.com/v3/bidou88.map-iukweyr5/{z}/{x}/{y}.png', {
-	    		attribution: 'MapBox',
-    			maxZoom: 18
-			}).addTo(map);
-
-			map.locate({setView: true, maxZoom: 16});
-
-			function onLocationFound(e) {
-				L.marker(e.latlng).addTo(map);
-			}
-
-			map.on('locationfound', onLocationFound);
-
-			function onLocationError(e) {
-			    alert(e.message);
-			}
-
-			map.on('locationerror', onLocationError);
-			
-	    });
-    </script>
 </body>
 </html>
