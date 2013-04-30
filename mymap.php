@@ -52,7 +52,11 @@
 		function onSocketConnected() {
 			console.log("Connected to socket server");
 			
+<<<<<<< HEAD
 			socket.emit("new person", {mapId: 13, name: "toto", x: 45454, y: 54545454});
+=======
+			socket.emit("new person", {mapId: 212321, name: "toto", latitude: 45454, longitude: 54545454});
+>>>>>>> HEllo
 		};
 
 		// Socket disconnected
@@ -62,6 +66,7 @@
 
 		function onNewPerson(data) {
 			console.log("New person connected: "+data.id);
+			console.log(data.name + data.mapId);
 		};
 
 		function onRemovePerson(data) {
