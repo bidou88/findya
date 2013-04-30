@@ -2,6 +2,26 @@
 	text-align: center;
 }
 
+.centerGenerate {
+	text-align: center;
+	margin-top: 20%;
+}
+
+.center a {
+	width: 150px;
+	height: 150px;
+	margin: 40px auto;
+}
+
+#link {
+	text-align: left;
+	margin-top: 5%;
+}
+
+#copybtn {
+	text-align: right;
+}
+
 img.logo {
 	max-width: 100%;
 	margin:0 auto 0 auto;
