@@ -1,43 +1,48 @@
-var Person = function(mapIdPerson, namePerson, lat, lng) {
+var Person = function(mapIdPerson, namePerson) {
     var mapId = mapIdPerson,
         name = namePerson,
-        latitude = lat,
-        longitude = lng,
+        latitude,
+        longitude,
         id;
 
+    var getId = function() {
+        return id;
+    }
+
     var getMapId = function() {
-        return this.mapId;
+        return mapId;
     };    
 
     var getName = function() {
-        return this.name;
+        return name;
     };
 
     var getLatitude = function() {
-        return this.latitude;
+        return latitude;
     };
 
     var getLongitude = function() {
-        return this.longitude;
+        return longitude;
     };
 
     var setMapId = function(newMapId) {
-        this.mapId = newMapId;
+        mapId = newMapId;
     };
 
     var setName = function(newName) {
-        this.name = newName;
+        name = newName;
     };
 
     var setLatitude = function(newLatitude) {
-        this.latitude = newLatitude;
+        latitude = newLatitude;
     };
 
     var setLongitude = function(newLongitude) {
-        this.longitude = newLongitude;
+        longitude = newLongitude;
     };
 
     return {
+        getId: getId,
         getMapId: getMapId,
         getName: getName,
         getLatitude: getLatitude,
@@ -45,8 +50,7 @@ var Person = function(mapIdPerson, namePerson, lat, lng) {
         setMapId: setMapId,
         setName: setName,
         setLatitude: setLatitude,
-        setlongitude: setLongitude,
-        id: id
+        setLongitude: setLongitude
     }
 };
 

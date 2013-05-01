@@ -9,7 +9,7 @@ function init() {
 
 	persons = [];
 
-	socket = io.listen(8000	);
+	socket = io.listen(8000);
 
 	socket.configure(function() {
 		socket.set("transports", ["websocket"]);
@@ -41,31 +41,31 @@ function onSocketConnection(client) {
 
 function onClientDisconnect() {
 
-	util.log("Person is disconnected: "+this.id);
-
 	var person = personById(this.id);
+
+	util.log("Person is disconnected: "+this.id+" - "+person.getName());
 
 	persons.splice(persons.indexOf(person), 1);
 
-	this.broadcast.emit("remove person", {mapId: person.mapId, id: person.id, name: person.name, latitude: person.getLatitude(), longitude: person.getLongitude()});
-
+	this.broadcast.emit("remove person", {mapId: person.getMapId(), id: person.id, name: person.getName(), latitude: person.getLatitude(), longitude: person.getLongitude()});
 };
 
 function onNewPerson(data) {
 
-	var newPerson = new Person(data.mapId, data.name, data.latitude, data.longitude);
+	var newPerson = new Person(data.mapId, data.name);
 	newPerson.id = this.id;
 
 	persons.push(newPerson);
 
 	for (var i = 0; i < persons.length; i++) {
-		if(persons[i].getMapId()==data.mapId) {
-			util.log("Server envoi to " +newPerson.id+ " sur map "+data.mapId+ " l'ID suivant "+persons[i].id);
-			this.emit("add person", {mapId: persons[i].mapId, id: persons[i].id, name: persons[i].name, latitude: persons[i].getLatitude(), longitude: persons[i].getLongitude()});
+		if(persons[i].getMapId()==data.mapId && persons[i].id != this.id) {
+			util.log("Server envoi to " +newPerson.id+" - "+newPerson.getName()+" sur map "+data.mapId+ " l'ID suivant "+persons[i].id);
+			this.emit("add person", {mapId: persons[i].getMapId(), id: persons[i].id, name: persons[i].getName(), latitude: persons[i].getLatitude(), longitude: persons[i].getLongitude()});
 		}
 	}
-	util.log("Server envoi to : ALL sauf " +newPerson.id);
-	this.broadcast.emit("new person", {mapId: newPerson.mapId, id: newPerson.id, name: newPerson.name, latitude: newPerson.getLatitude(), longitude: newPerson.getLongitude()});
+
+	util.log("New person created : " +newPerson.id+" - "+newPerson.getName());
+	this.broadcast.emit("new person", {mapId: newPerson.getMapId(), id: newPerson.id, name: newPerson.getName()});
 	
 };
 
@@ -77,8 +77,8 @@ function onUpdateLocation(data) {
 	person.setLatitude(lat);
 	person.setLongitude(lng);
 
-	util.log("Server updated location of "+this.id);
-	this.broadcast.emit("update location", {mapId: person.mapId, id: person.id, latitude: person.latitude, longitude: person.longitude});
+	util.log("Server updated location of "+this.id+" - "+person.getName()+" with lat = "+person.getLatitude()+" lng = "+person.getLongitude());
+	this.broadcast.emit("update location", {mapId: person.getMapId(), id: person.id, name: person.getName(), latitude: person.getLatitude(), longitude: person.getLongitude()});
 };
 
 function onRemovePerson(data) {

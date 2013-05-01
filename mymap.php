@@ -21,7 +21,12 @@
 		var socket;
 	</script>
 
-	<script src="http://localhost:8000/socket.io/socket.io.js"></script>
+	<script src="http://10.192.82.108:8000/socket.io/socket.io.js"></script>
+
+	<script src="js/simpledialog.min.js"></script>
+	<link rel="stylsheet" href="css/simpledialog.css" />
+	<script src="js/leaflet.label.js"></script>
+	<link rel="stylesheet" href="css/leaflet.label.css"/>
 
 </head>
 <body>
@@ -35,9 +40,10 @@
 			lat,
 			lng,
 			personId,
+			personName,
 			markers = [], //Tableau de marqueurs
 			persons = [], //Tableau de personnes sur la map
-			mapPM{}; //Hashmap de personnes et de marqueurs
+			mapPM = {}; //Hashmap de personnes et de marqueurs
 
 		$(document).ready(function($) {
 			<?php
@@ -56,16 +62,12 @@
 		});
 
 		function init() {
-			socket = io.connect("http://localhost", {port: 8000, transports: ["websocket"]});
-			setEventHandlers();
+			
 
 			$.when(loadMap()).done(function() {
-				socket.emit("new person", {mapId: madId, name: "toto"});
-			
-				map.locate({setView: true, maxZoom: 15, watch: true});
+				socket = io.connect("http://10.192.82.108", {port: 8000, transports: ["websocket"]});
+				setEventHandlers();
 			});
-
-			
 		}
 
 		var setEventHandlers = function() {
@@ -91,31 +93,44 @@
 		// Socket connected
 		function onSocketConnected() {
 			console.log("Connected to socket server");
-			
+
+			$('<div>').simpledialog2({
+				mode: 'button',
+				headerText: 'Findya',
+				headerClose: true,
+				buttonPrompt: 'Hey! My name is...',
+				buttonInput: true,
+				buttons : {
+				  'OK': {
+				    click: function () {
+				    	personName = $.mobile.sdLastInput;
+				    	socket.emit("new person", {mapId: mapId, name: personName});
+				    	map.locate({setView: true, maxZoom: 15, watch: true});
+				    }
+				  },
+				}
+			});
 		};
 
 		// Socket disconnected
 		function onSocketDisconnect() {
+
 			console.log("Disconnected from socket server");
+			map.stopLocate();
 		};
 
 		function onPersonsOnMap(data) {
 			console.log("Add person on map");
-			var newLatLng = new L.LatLng(data.latitude, data.longitude);
-			var marker = new L.Marker(newLatLng);
-			map.addLayer(marker);
 
+			var newLatLng = new L.LatLng(data.latitude, data.longitude);
+			var marker = new L.Marker(newLatLng).bindLabel(data.name, { noHide: true }).addTo(map).showLabel();
 			markers.push(marker);
 		};
 
 		function onNewPerson(data) {
 			console.log("New person connected: "+data.id);
 
-			var newLatLng = new L.LatLng(data.latitude, data.longitude);
-			var marker = new L.Marker(newLatLng);
-			map.addLayer(marker);
-
-			markers.push(marker);
+			persons.push(data.id);
 		};
 
 		function onRemovePerson(data) {
@@ -127,19 +142,19 @@
 					map.removeLayer(markers[i]);
 				}
 			}
-			
 		};
 
 		function onUpdateLocation(data) {
 
 			var newLatLng = new L.LatLng(data.latitude, data.longitude);
 
-			for(var i = 0; i<persons.length;i++) {
-
-				if(data.id == persons[i]) {
-					var marker = mapPM{persons[i]};
-					marker.setLatLng(newLatLng);
-				}
+			if(data.id in mapPM) {
+				var marker = mapPM[data.id];
+				marker.setLatLng(newLatLng);
+			} else {
+				var marker = new L.Marker(newLatLng).bindLabel(data.name).addTo(map);
+				markers.push(marker);
+				mapPM[data.id] = marker;
 			}
 		};
 
@@ -154,12 +169,9 @@
 				lat = e.latlng.lat;
 				lng = e.latlng.lng;
 
-				socket.emit("update location", {latitude: lat, longitude, lng});
-
+				socket.emit("update location", {latitude: lat, longitude: lng});
 				var newLatLng = new L.LatLng(lat, lng);
-				var marker = new L.Marker(newLatLng);
-				map.addLayer(marker);
-
+				var marker =  new L.Marker(newLatLng).bindLabel(personName).addTo(map);
 				markers.push(marker);
 			}
 
