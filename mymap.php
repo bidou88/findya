@@ -21,7 +21,7 @@
 		var socket;
 	</script>
 
-	<script src="http://10.192.82.181:8000/socket.io/socket.io.js"></script>
+	<script src="http://localhost:8000/socket.io/socket.io.js"></script>
 
 </head>
 <body>
@@ -34,17 +34,21 @@
 			map,
 			lat,
 			lng,
-			markers = [];
+			personId,
+			markers = [], //Tableau de marqueurs
+			persons = [], //Tableau de personnes sur la map
+			mapPM{}; //Hashmap de personnes et de marqueurs
 
 		$(document).ready(function($) {
 			<?php
 				if(isset($_REQUEST['mapId'])) {
 			?>
 				mapId = <?php echo ($_REQUEST['mapId']); ?>;
-				alert(mapId);
 			<?php
 				} else {
 					header('HTTP/1.0 404 Not Found');
+					include('404.html');
+					die();
 				}
 			?>
 
@@ -52,9 +56,16 @@
 		});
 
 		function init() {
-			socket = io.connect("http://10.192.82.181", {port: 8000, transports: ["websocket"]});
+			socket = io.connect("http://localhost", {port: 8000, transports: ["websocket"]});
 			setEventHandlers();
-			loadMap();
+
+			$.when(loadMap()).done(function() {
+				socket.emit("new person", {mapId: madId, name: "toto"});
+			
+				map.locate({setView: true, maxZoom: 15, watch: true});
+			});
+
+			
 		}
 
 		var setEventHandlers = function() {
@@ -67,8 +78,11 @@
 			// New player message received
 			socket.on("new person", onNewPerson);
 
+			//New location updated
+			socket.on("update location", onUpdateLocation);
+
 			// New player message received
-			socket.on("add_person", onPersonsOnMap);
+			socket.on("add person", onPersonsOnMap);
 
 			// Player removed message received
 			socket.on("remove person", onRemovePerson);
@@ -77,6 +91,7 @@
 		// Socket connected
 		function onSocketConnected() {
 			console.log("Connected to socket server");
+			
 		};
 
 		// Socket disconnected
@@ -115,6 +130,19 @@
 			
 		};
 
+		function onUpdateLocation(data) {
+
+			var newLatLng = new L.LatLng(data.latitude, data.longitude);
+
+			for(var i = 0; i<persons.length;i++) {
+
+				if(data.id == persons[i]) {
+					var marker = mapPM{persons[i]};
+					marker.setLatLng(newLatLng);
+				}
+			}
+		};
+
 		function loadMap() {
     		map = L.map('map');
 	    	L.tileLayer('http://a.tiles.mapbox.com/v3/bidou88.map-iukweyr5/{z}/{x}/{y}.png', {
@@ -122,19 +150,17 @@
     			maxZoom: 18
 			}).addTo(map);
 
-			map.locate({setView: true, maxZoom: 15});
-
 			function onLocationFound(e) {
 				lat = e.latlng.lat;
 				lng = e.latlng.lng;
-				
+
+				socket.emit("update location", {latitude: lat, longitude, lng});
+
 				var newLatLng = new L.LatLng(lat, lng);
 				var marker = new L.Marker(newLatLng);
 				map.addLayer(marker);
 
 				markers.push(marker);
-
-				socket.emit("new person", {mapId: mapId, name: "toto", latitude: lat, longitude: lng});
 			}
 
 			map.on('locationfound', onLocationFound);

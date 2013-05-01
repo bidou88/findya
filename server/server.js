@@ -34,8 +34,9 @@ function onSocketConnection(client) {
 
 	client.on("new person", onNewPerson);
 
-	client.on("remove person", onRemovePerson);
+	client.on("update location", onUpdateLocation);
 
+	client.on("remove person", onRemovePerson);
 };
 
 function onClientDisconnect() {
@@ -60,12 +61,24 @@ function onNewPerson(data) {
 	for (var i = 0; i < persons.length; i++) {
 		if(persons[i].getMapId()==data.mapId) {
 			util.log("Server envoi to " +newPerson.id+ " sur map "+data.mapId+ " l'ID suivant "+persons[i].id);
-			this.emit("add_person", {mapId: persons[i].mapId, id: persons[i].id, name: persons[i].name, latitude: persons[i].getLatitude(), longitude: persons[i].getLongitude()});
+			this.emit("add person", {mapId: persons[i].mapId, id: persons[i].id, name: persons[i].name, latitude: persons[i].getLatitude(), longitude: persons[i].getLongitude()});
 		}
 	}
 	util.log("Server envoi to : ALL sauf " +newPerson.id);
 	this.broadcast.emit("new person", {mapId: newPerson.mapId, id: newPerson.id, name: newPerson.name, latitude: newPerson.getLatitude(), longitude: newPerson.getLongitude()});
 	
+};
+
+function onUpdateLocation(data) {
+	lat = data.latitude;
+	lng = data.longitude;
+
+	var person = personById(this.id);
+	person.setLatitude(lat);
+	person.setLongitude(lng);
+
+	util.log("Server updated location of "+this.id);
+	this.broadcast.emit("update location", {mapId: person.mapId, id: person.id, latitude: person.latitude, longitude: person.longitude});
 };
 
 function onRemovePerson(data) {
