@@ -1,6 +1,6 @@
 <?php
-	if(isset($_POST['url'])) {
-		$url = $_POST['url'];
+	if(isset($_REQUEST['url'])) {
+		$url = urldecode($_REQUEST['url']);
 	} else {
 		header('HTTP/1.0 404 Not Found', true, 404);
 		include('404.html');
@@ -27,49 +27,14 @@
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
 	<script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
 
-	<script src="js/scripts.js"></script>
-
 </head>
 <body>
 
 	<div id="fb-root"></div>
+
 	<script>
 
 		var facebook;
-		var urlbit;
-
-		function processIncomingRequest() {
-		    var urlParams = {};
-		    (function () {
-		        var match,
-		        pl     = /\+/g,  // Regex for replacing addition symbol with a space
-		        search = /([^&=]+)=?([^&]*)/g,
-		        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
-		        query  = window.location.search.substring(1);
-
-		    while (match = search.exec(query))
-		        urlParams[decode(match[1])] = decode(match[2]);
-		    })();
-
-		    var requestType = urlParams["app_request_type"];
-
-		    if (requestType == "user_to_user") {
-		         var requestID = urlParams["request_ids"];  
-
-		        FB.api(requestID, function(response) {
-		            console.log(response.data);
-		            urlbit = response.data;
-		            deleteRequest(requestID);
-		        });
-		      }
-		}
-
-		function deleteRequest(requestId) {
-		  FB.api(requestId, 'delete', function(response) {
-		    console.log(response);
-		    window.location.href = urlbit;
-		  });
-		}
 
 		function login() {
 			FB.login(function(response) {
@@ -103,11 +68,12 @@
 	      xfbml      : true  // parse XFBML
 	    });
 
+	    $(document).trigger("facebook:ready");
+
 	    FB.getLoginStatus(function(response) {
 			if (response.status === 'connected') {
 		    	// connected
 		    	facebook = response.status;
-		    	processIncomingRequest();
 			} else if (response.status === 'not_authorized') {
 		    	// not_authorized
 		  	} else {
@@ -137,8 +103,8 @@
 			<div class="centerShare">
 				
 					<?php 
-						if(isset($_POST['url'])) { 
-							?><a id="link" href="<?php echo $_POST["url"]?>"><?php echo $_POST['url']; ?></a><?php
+						if(isset($_REQUEST['url'])) { 
+							?><a id="link" href="<?php echo $_REQUEST["url"]?>"><?php echo $_REQUEST['url']; ?></a><?php
 						} else {
 							header('HTTP/1.0 404 Not Found');
 						}
@@ -149,11 +115,13 @@
 					<div class="ui-block-b"><a href="#" data-role="button" data-theme="b" data-corners="false">Tweet</a></div>
 
 					<div class="ui-block-a"><a href="mailto:?subject=Tell your friend where you are!&body=Hi, I wanna share my position with you, just click on this Findya link and show your friends where you are : "+<?php echo $_POST['url'];?>+"." data-role="button" data-theme="b" data-corners="false" rel="external">Mail</a></div>
-					<div class="ui-block-b"><a href="#" data-role="button" data-theme="b" data-corners="false" >Copy</a></div>
+					<div class="ui-block-b"><a id="copy" href="#" data-role="button" data-theme="b" data-corners="false" >Copy</a></div>
 				</div>
 			</div>
 		</div>
 			
 	</div>
+
+	<script src="js/scripts.js"></script>
 </body>
 </html>

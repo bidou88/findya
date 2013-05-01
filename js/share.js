@@ -1,8 +1,4 @@
-$(document).ready(function() {
-
-	$('#link').click(function() {
-		window.location.href= $('#link').text();
-	});
+$(document).on("facebook:ready", function() {
 
 	$('#share').click(function() {
 		if (facebook === 'connected') {
@@ -11,5 +7,5 @@ $(document).ready(function() {
 			login();
 		}
 	});
-
+	
 });

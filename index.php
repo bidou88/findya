@@ -18,8 +18,6 @@
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
 	<script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
 
-	<script src="js/scripts.js"></script>
-
 </head>
 <body>
 
@@ -53,7 +51,7 @@
 		         var requestID = urlParams["request_ids"];  
 
 		        FB.api(requestID, function(response) {
-		            console.log(response.data);
+		            //console.log(response.data);
 		            urlbit = response.data;
 		            deleteRequest(requestID);
 		        });
@@ -62,7 +60,7 @@
 
 		function deleteRequest(requestId) {
 		  FB.api(requestId, 'delete', function(response) {
-		    console.log(response);
+		    //console.log(urlbit);
 		    window.location.href = urlbit;
 		  });
 		}
@@ -128,5 +126,7 @@
 		</div>
 
 	</div>
+
+	<script src="js/scripts.js"></script>
 </body>
 </html>
