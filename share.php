@@ -41,7 +41,7 @@
 				<div id="sharebtns" class="ui-grid-a">
 					<div class="ui-block-a"><a href="#" data-role="button" data-theme="b" data-corners="false" >Share</a></div>
 					<div class="ui-block-b"><a href="#" data-role="button" data-theme="b" data-corners="false">Tweet</a></div>
-					<div class="ui-block-a"><a href="mailto:" data-role="button" data-theme="b" data-corners="false" rel="external">Mail</a></div>
+					<div class="ui-block-a"><a href="mailto:?subject=Tell your friend where you are!&body=Hi, I wanna share my position with you, just click on this Findya link and show your friends where you are : "+<?php echo $_POST['url'];?>+"." data-role="button" data-theme="b" data-corners="false" rel="external">Mail</a></div>
 					<div class="ui-block-b"><a href="#" data-role="button" data-theme="b" data-corners="false" >Copy</a></div>
 				</div>
 			</div>
