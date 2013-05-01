@@ -1,3 +1,13 @@
+<?php
+	if(isset($_POST['url'])) {
+		$url = $_POST['url'];
+	} else {
+		header('HTTP/1.0 404 Not Found', true, 404);
+		include('404.html');
+		die();
+	}
+?>
+
 <!DOCTYPE html> 
 <html> 
 <head>

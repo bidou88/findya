@@ -11,6 +11,10 @@ html, body, #home, #content, #map {
 	text-align: center;
 }
 
+.center img {
+	max-width: 100%;
+}
+
 .center a {
 	width: 150px;
 	height: 150px;
