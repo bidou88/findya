@@ -41,11 +41,17 @@ function onClientDisconnect() {
 
 	var person = personById(this.id);
 
-	util.log("Person is disconnected: "+this.id+" - "+person.getName());
+	if(person != false) {
+		util.log("Person is disconnected: "+this.id+" - "+person.getName());
 
-	persons.splice(persons.indexOf(person), 1);
+		persons.splice(persons.indexOf(person), 1);
 
-	this.broadcast.emit("remove person", {mapId: person.getMapId(), id: person.id, name: person.getName(), latitude: person.getLatitude(), longitude: person.getLongitude()});
+		this.broadcast.emit("remove person", {mapId: person.getMapId(), id: person.id, name: person.getName(), latitude: person.getLatitude(), longitude: person.getLongitude()});
+	} else {
+		util.log("Client disconnected untimely");
+	}
+
+	
 };
 
 function onNewPerson(data) {
