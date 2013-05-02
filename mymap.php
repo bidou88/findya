@@ -213,9 +213,12 @@
 		function login() {
 			FB.login(function(response) {
 			    if (response.authResponse) {
-			        // connected
+			        FB.api('/me', function(response) {
+						personName = response.name;
+						init();
+					});
 			    } else {
-			        // cancelled
+			        init();
 			    }
 		    });
 		}
@@ -234,7 +237,11 @@
 		    	// connected
 		    	FB.api('/me', function(response) {
 					personName = response.name;
-					init();
+					FB.api('/me/picture', function(response) {
+						console.log(response);
+						init();
+					});
+					//init();
 				});
 			} else if (response.status === 'not_authorized') {
 		    	// not_authorized
