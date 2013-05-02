@@ -11,29 +11,21 @@ body {
 	max-width: 100%;
 }
 
-.center a {
-	width: 150px;
-	height: 150px;
-	margin: 40px auto;
+#getMap {
+	width: 200px;
+	margin: 0 auto;
 }
 
 #getMap .ui-btn-inner {
-	padding-top: 60px;
+	padding: 60px 0;
 }
 
-.centerShare a{
+#superlink {
+	display: block;
 	text-align: center;
-}
-
-#sharebtns a {
-	width: 100px;
-	height: 100px;
-	margin: 0 0 4px 0;
 }
 
 #link {
-	display: block;
-	text-align: center;
 	font-size: 1.6em;
 	font-style: bold;
 	text-decoration: none;
@@ -43,10 +35,8 @@ body {
 	text-align: right;
 }
 
-#sharebtns {
-	width: 215px;
-	height: 210px;
-	margin: 20px auto;
+.mycontrol-share {
+	margin-top: 30px;
 }
 
 img.logo {
@@ -56,8 +46,5 @@ img.logo {
 
 /* BIDOU CSS */
 
-.ui-grid-b .mygrid-share {
-	width: 300px;
-}
 
 
