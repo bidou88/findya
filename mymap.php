@@ -131,6 +131,8 @@
 		function onNewPerson(data) {
 			console.log("New person connected: "+data.id);
 
+			showPopup(data, 1);
+
 			persons.push(data.id);
 		};
 
@@ -143,6 +145,8 @@
 					map.removeLayer(markers[i]);
 				}
 			}
+
+			showPopup(data, 0);
 		};
 
 		function onUpdateLocation(data) {
@@ -245,46 +249,65 @@
 		    });
 		}
 
-	  window.fbAsyncInit = function() {
-	    FB.init({
-	      appId      : '158880540947821', // App ID
-	      channelUrl : 'channel.html', // Channel File
-	      status     : true, // check login status
-	      cookie     : true, // enable cookies to allow the server to access the session
-	      xfbml      : true  // parse XFBML
-	    });
+	    window.fbAsyncInit = function() {
+		    FB.init({
+		      appId      : '158880540947821', // App ID
+		      channelUrl : 'channel.html', // Channel File
+		      status     : true, // check login status
+		      cookie     : true, // enable cookies to allow the server to access the session
+		      xfbml      : true  // parse XFBML
+		    });
 
-	    FB.getLoginStatus(function(response) {
-			if (response.status === 'connected') {
-		    	// connected
-		    	FB.api('/me', function(response) {
-					personName = response.name;
-					FB.api('/me/picture', function(response) {
-						personImage = response.data.url;
-						init();
+		    FB.getLoginStatus(function(response) {
+				if (response.status === 'connected') {
+			    	// connected
+			    	FB.api('/me', function(response) {
+						personName = response.name;
+						FB.api('/me/picture', function(response) {
+							personImage = response.data.url;
+							init();
+						});
+						//init();
 					});
-					//init();
-				});
-			} else if (response.status === 'not_authorized') {
-		    	// not_authorized
-		    	init();
-		  	} else {
-		    	// not_logged_in
-		    	init();
-		  	}
-		});
+				} else if (response.status === 'not_authorized') {
+			    	// not_authorized
+			    	init();
+			  	} else {
+			    	// not_logged_in
+			    	init();
+			  	}
+			});
 
-	  };
+	  	};
 
-	  // Load the SDK Asynchronously
-	  (function(d){
-	     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-	     if (d.getElementById(id)) {return;}
-	     js = d.createElement('script'); js.id = id; js.async = true;
-	     js.src = "//connect.facebook.net/fr_FR/all.js";
-	     ref.parentNode.insertBefore(js, ref);
-	   }(document));
-	
+		// Load the SDK Asynchronously
+		(function(d){
+			var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+			if (d.getElementById(id)) {return;}
+			js = d.createElement('script'); js.id = id; js.async = true;
+			js.src = "//connect.facebook.net/fr_FR/all.js";
+			ref.parentNode.insertBefore(js, ref);
+		}(document));
+		
+		function showPopup(data, type) {
+
+			//Création du popup
+		    var $popup = $("<div/>").popup({
+		        dismissible : false,
+		        theme : "a",
+		        overlyaTheme : "a",
+		        transition : "fade"
+		    }).on("popupafterclose", function() {
+		        $(this).remove();
+		    });
+
+
+		    //Message
+		    $("<p/>", {text : data.name+" is connected."}).appendTo($popup);
+
+		    $popup.popup("open").trigger("create");
+		}
+
 	</script>
 
 	<div data-role="page" id="home">
