@@ -17,13 +17,11 @@ function init() {
 	});
 
 	setEventHandlers();
-
 };
 
 var setEventHandlers = function() {
 
 	socket.sockets.on("connection", onSocketConnection);
-
 };
 
 function onSocketConnection(client) {

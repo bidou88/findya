@@ -22,7 +22,7 @@
 		var socket;
 	</script>
 
-	<script src="http://ogo.heig-vd.ch:8000/socket.io/socket.io.js"></script>
+	<script src="http://localhost:8000/socket.io/socket.io.js"></script>
 
 	<script src="js/simpledialog.min.js"></script>
 	<link rel="stylsheet" href="css/simpledialog.css" />
@@ -66,7 +66,7 @@
 			
 
 			$.when(loadMap()).done(function() {
-				socket = io.connect("http://ogo.heig-vd.ch", {port: 8000, transports: ["websocket"]});
+				socket = io.connect("http://localhost", {port: 8000, transports: ["websocket"]});
 				setEventHandlers();
 			});
 		}
@@ -98,7 +98,7 @@
 			$('<div>').simpledialog2({
 				mode: 'button',
 				headerText: 'Findya',
-				headerClose: true,
+				headerClose: false,
 				buttonPrompt: 'Hey! My name is...',
 				buttonInput: true,
 				buttons : {
@@ -106,7 +106,7 @@
 				    click: function () {
 				    	personName = $.mobile.sdLastInput;
 				    	socket.emit("new person", {mapId: mapId, name: personName});
-				    	map.locate({setView: true, maxZoom: 15, watch: true});
+				    	map.locate({setView: true, maxZoom: 15, watch: true, enableHighAccuracy: true});
 				    }
 				  },
 				}
@@ -167,13 +167,25 @@
 			}).addTo(map);
 
 			function onLocationFound(e) {
+				console.log("Location Found");
+
 				lat = e.latlng.lat;
 				lng = e.latlng.lng;
 
 				socket.emit("update location", {latitude: lat, longitude: lng});
 				var newLatLng = new L.LatLng(lat, lng);
-				var marker =  new L.Marker(newLatLng).bindLabel(personName).addTo(map);
-				markers.push(marker);
+
+
+				if(personId in mapPM) {
+					console.log("Marker exists, do update");
+					var marker = mapPM[personId];
+					marker.setLatLng(newLatLng);
+				} else {
+					console.log("Marker doesn't exists, do create");
+					var marker = new L.Marker(newLatLng).bindLabel(personName).addTo(map);
+					markers.push(marker);
+					mapPM[personId] = marker;
+				}
 			}
 
 			map.on('locationfound', onLocationFound);
