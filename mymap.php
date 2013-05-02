@@ -20,7 +20,7 @@
 
 	<script src="http://ogo.heig-vd.ch:8000/socket.io/socket.io.js"></script>
 
-	<link rel="stylesheet" href="../css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
 
 	<script src="js/leaflet.label.js"></script>
 	<link rel="stylesheet" href="css/leaflet.label.css"/>
@@ -153,17 +153,10 @@
 				marker.setLatLng(newLatLng);
 			} else {
 
-				if(data.id == personId) {
-					var icon = L.AwesomeMarkers.icon ({
-						icon: 'user', 
-  						color: 'red'
-					});
-				} else {
-					var icon = L.AwesomeMarkers.icon ({
-						icon: 'user', 
-  						color: 'blue'
-					});
-				}
+				var icon = L.AwesomeMarkers.icon ({
+					icon: 'user', 
+						color: 'blue'
+				});
 
 				var marker = new L.Marker(newLatLng, {icon: icon}).bindLabel(data.name).addTo(map);
 				markers.push(marker);
@@ -187,14 +180,20 @@
 				socket.emit("update location", {latitude: lat, longitude: lng});
 				var newLatLng = new L.LatLng(lat, lng);
 
+				var icon = L.AwesomeMarkers.icon ({
+					icon: 'user', 
+  					color: 'red',
+  					labelAnchor: [6, 0]
+				});
+
 
 				if(personId in mapPM) {
 					console.log("Marker exists, do update");
 					var marker = mapPM[personId];
-					marker.setLatLng(newLatLng);
+					marker.setLatLng(newLatLng, {icon: icon});
 				} else {
 					console.log("Marker doesn't exists, do create");
-					var marker = new L.Marker(newLatLng).bindLabel(personName).addTo(map);
+					var marker = new L.Marker(newLatLng, {icon: icon}).bindLabel(personName).addTo(map);
 					markers.push(marker);
 					mapPM[personId] = marker;
 				}
