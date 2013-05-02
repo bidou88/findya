@@ -156,7 +156,8 @@
 
 				var icon = L.AwesomeMarkers.icon ({
 					icon: 'user', 
-						color: 'blue'
+						color: 'blue',
+						labelAnchor: [8, -15]
 				});
 
 				var marker = new L.Marker(newLatLng, {icon: icon}).bindLabel(data.name).addTo(map);
@@ -181,11 +182,18 @@
 				socket.emit("update location", {latitude: lat, longitude: lng});
 				var newLatLng = new L.LatLng(lat, lng);
 
-				var icon = L.AwesomeMarkers.icon ({
-					icon: 'user', 
-  					color: 'red',
-  					labelAnchor: [6, 0]
+				var icon = L.icon({
+					iconUrl: personImage,
+    				iconSize: [50, 50],
+    				iconAnchor: [10, 10],
+    				labelAnchor: [6, 0]
 				});
+
+				// var icon = L.AwesomeMarkers.icon ({
+				// 	iconUrl: personImage, 
+  		// 			color: 'red',
+  		// 			labelAnchor: [8, -15]
+				// });
 
 
 				if(personId in mapPM) {
