@@ -54,4 +54,8 @@ img.logo {
 	margin:0 auto 0 auto;
 }
 
+/* BIDOU CSS */
+
+.ui-dialog.my-dialog .ui-dialog-contain { margin-top: 0 }
+
 

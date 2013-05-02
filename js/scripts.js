@@ -40,7 +40,7 @@ $(document).on("facebook:ready", function() {
 
 function getBitUrl() {
 	var mapID = Math.floor((Math.random()*10000000000)+1000000000);
-	var longUrl="http://poulpe.heig-vd.ch/julien/findya/mymap.php?id="+mapID;
+	var longUrl="http://poulpe.heig-vd.ch/ogo13/julien/findya/mymap.php?mapId="+mapID;
 	//var longUrl = "http://www.google.com";
 	var request = $.ajax({
 		beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
