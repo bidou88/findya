@@ -18,17 +18,13 @@
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
 	<script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
 
-	<script>
-		var socket;
-	</script>
+	<script src="http://localhost:8000/socket.io/socket.io.js"></script>
 
-	<script src="http://ogo.heig-vd.ch:8000/socket.io/socket.io.js"></script>
-
-	<script src="js/simpledialog.min.js"></script>
-	<link rel="stylsheet" href="css/simpledialog.css" />
 	<script src="js/leaflet.label.js"></script>
 	<link rel="stylesheet" href="css/leaflet.label.css"/>
 
+	<link rel="stylesheet" href="css/leaflet.awesome-markers.css">
+	<script src="js/leaflet.awesome-markers.min.js"></script>
 </head>
 <body>
 
@@ -67,7 +63,7 @@
 
 			$.when(loadMap()).done(function() {
 
-				socket = io.connect("http://ogo.heig-vd.ch", {port: 8000, transports: ["websocket"]});
+				socket = io.connect("localhost", {port: 8000, transports: ["websocket"]});
 
 				setEventHandlers();
 			});
@@ -155,7 +151,19 @@
 				var marker = mapPM[data.id];
 				marker.setLatLng(newLatLng);
 			} else {
-				var marker = new L.Marker(newLatLng).bindLabel(data.name).addTo(map);
+
+				if(data.id == personId) {
+					var icon = L.AwesomeMarkers.icon ({
+						icon: 'user', 
+  						color: 'red'
+					});
+				} else {
+					var icon = L.AwesomeMarkers.icon ({
+						icon: 'user', 
+  						color: 'blue'
+					});
+				}
+				var marker = new L.Marker(newLatLng, {icon: icon}).bindLabel(data.name).addTo(map);
 				markers.push(marker);
 				mapPM[data.id] = marker;
 			}
