@@ -183,10 +183,14 @@
 				var newLatLng = new L.LatLng(lat, lng);
 
 				var icon = L.icon({
-					iconUrl: personImage,
-    				iconSize: [50, 50],
-    				iconAnchor: [10, 10],
-    				labelAnchor: [6, 0]
+				    iconUrl: personImage,
+				    shadowUrl: 'img/shadow_facebook.png',
+
+				    iconSize:     [50, 50], // size of the icon
+				    shadowSize:   [70, 70], // size of the shadow
+				    iconAnchor:   [25, 25], // point of the icon which will correspond to marker's location
+				    shadowAnchor: [10, 10],  // the same for the shadow
+				   
 				});
 
 				// var icon = L.AwesomeMarkers.icon ({
