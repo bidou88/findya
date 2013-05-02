@@ -183,11 +183,12 @@
     		map = L.map('map');
 	    	L.tileLayer('http://a.tiles.mapbox.com/v3/bidou88.map-iukweyr5/{z}/{x}/{y}.png', {
 	    		attribution: 'MapBox',
+	    		setZoom: 8,
     			maxZoom: 18
 			}).addTo(map);
+			//alert("Load map");
 
 			function onLocationFound(e) {
-				console.log("Location Found");
 
 				lat = e.latlng.lat;
 				lng = e.latlng.lng;
@@ -219,6 +220,7 @@
 					var marker = new L.Marker(newLatLng, {icon: icon}).bindLabel(personName).addTo(map);
 					markers.push(marker);
 					mapPM[personId] = marker;
+					map.locate({setView : false});
 				}
 			}
 
@@ -313,6 +315,7 @@
 	<div data-role="page" id="home">
 	
 		<div data-role="header">
+			<a href="#" data-role="button" data-rel="back" data-icon="arrow-l">Back</a>
 			<h1>findya</h1>
 		</div>
 
