@@ -22,7 +22,7 @@
 		var socket;
 	</script>
 
-	<script src="http://localhost:8000/socket.io/socket.io.js"></script>
+	<script src="http://10.192.82.67:8000/socket.io/socket.io.js"></script>
 
 	<script src="js/simpledialog.min.js"></script>
 	<link rel="stylsheet" href="css/simpledialog.css" />
@@ -66,7 +66,9 @@
 			
 
 			$.when(loadMap()).done(function() {
-				socket = io.connect("http://localhost", {port: 8000, transports: ["websocket"]});
+
+				socket = io.connect("http://10.192.82.67", {port: 8000, transports: ["websocket"]});
+
 				setEventHandlers();
 			});
 		}
