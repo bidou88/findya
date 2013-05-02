@@ -26,7 +26,7 @@
 	<link rel="stylesheet" href="css/leaflet.label.css"/>
 
 	<link rel="stylesheet" href="css/leaflet.awesome-markers.css">
-	<script src="js/leaflet.awesome-markers.min.js"></script>
+	<script src="js/leaflet.awesome-markers.js"></script>
 </head>
 <body>
 
@@ -94,7 +94,7 @@
 			$('#btn_ok').click(function() {
 				$( "#myDialog" ).dialog( "close" );
 				personName = $('#name').val();
-				socket.emit("new person", {mapId: mapId, name: personName});
+				socket.emit("new person", {mapId: mapId, name: personName, img: personImage});
 				map.locate({setView: true, maxZoom: 15, watch: true, enableHighAccuracy: true});
 			});
 
@@ -154,11 +154,18 @@
 				marker.setLatLng(newLatLng);
 			} else {
 
-				var icon = L.AwesomeMarkers.icon ({
-					icon: 'user', 
-						color: 'blue',
-						labelAnchor: [8, -15]
+				//Modification du plug-ing AwesomeMakers pour insérer une image dans le marker
+				var icon = L.FacebookMarkers.icon ({
+					icon: data.img, 
+  					color: 'red',
+  					labelAnchor: [8, -15]
 				});
+
+				// var icon = L.AwesomeMarkers.icon ({
+				// 	icon: 'user', 
+				// 		color: 'blue',
+				// 		labelAnchor: [8, -15]
+				// });
 
 				var marker = new L.Marker(newLatLng, {icon: icon}).bindLabel(data.name).addTo(map);
 				markers.push(marker);
@@ -182,22 +189,12 @@
 				socket.emit("update location", {latitude: lat, longitude: lng});
 				var newLatLng = new L.LatLng(lat, lng);
 
-				var icon = L.icon({
-				    iconUrl: personImage,
-				    shadowUrl: 'img/shadow_facebook.png',
-
-				    iconSize:     [50, 50], // size of the icon
-				    shadowSize:   [70, 70], // size of the shadow
-				    iconAnchor:   [25, 25], // point of the icon which will correspond to marker's location
-				    shadowAnchor: [10, 10],  // the same for the shadow
-				   
+				//Modification du plug-ing AwesomeMakers pour insérer une image dans le marker
+				var icon = L.FacebookMarkers.icon ({
+					icon: personImage, 
+  					color: 'red',
+  					labelAnchor: [8, -15]
 				});
-
-				// var icon = L.AwesomeMarkers.icon ({
-				// 	iconUrl: personImage, 
-  		// 			color: 'red',
-  		// 			labelAnchor: [8, -15]
-				// });
 
 
 				if(personId in mapPM) {

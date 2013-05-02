@@ -86,3 +86,12 @@ Version: 1.0
 .awesome-marker-icon-cadetblue {
   background-position: -324px 0;
 }
+
+.imgRound {
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  height: 60%;
+  width: 70%;
+  padding-top: 5px;
+}

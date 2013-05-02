@@ -1,12 +1,17 @@
-var Person = function(mapIdPerson, namePerson) {
+var Person = function(mapIdPerson, namePerson, newImg) {
     var mapId = mapIdPerson,
         name = namePerson,
         latitude,
         longitude,
+        img = newImg,
         id;
 
     var getId = function() {
         return id;
+    }
+
+    var getImg = function() {
+        return img;
     }
 
     var getMapId = function() {
@@ -29,6 +34,10 @@ var Person = function(mapIdPerson, namePerson) {
         mapId = newMapId;
     };
 
+    var setImg = function(newImg) {
+        img = newImg;
+    }
+
     var setName = function(newName) {
         name = newName;
     };
@@ -43,6 +52,7 @@ var Person = function(mapIdPerson, namePerson) {
 
     return {
         getId: getId,
+        getImg: getImg,
         getMapId: getMapId,
         getName: getName,
         getLatitude: getLatitude,
