@@ -112,7 +112,7 @@
 	   }(document));
 	</script>
 
-	<div data-role="page" id="home">
+	<div data-role="page">
 	
 		<div data-role="header">
 			<h1>findya</h1>

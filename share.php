@@ -93,15 +93,13 @@
 	   }(document));
 	</script>
 
-	<div data-role="page" id="home">
+	<div data-role="page">
 	
 		<div data-role="header">
-			<h1>Find your friends!</h1>
+			<h1>findya</h1>
 		</div>
 
 		<div data-role="content">
-			<div class="centerShare">
-				
 					<?php 
 						if(isset($_REQUEST['url'])) { 
 
@@ -111,12 +109,10 @@
 						}
 					?>
 				</a>
-				<div id="sharebtns" class="ui-grid-a">
-					<div class="ui-block-a"><a id="share" href="#" data-role="button" data-theme="b" data-corners="false">Share</a></div>
-					<div class="ui-block-b"><a href="http://www.twitter.com/share?text=findya : follow me&url=<?php echo $_REQUEST['url']?>" data-role="button" data-theme="b" data-corners="false">Tweet</a></div>
-
-					<div class="ui-block-a"><a href="mailto:?subject=Tell your friend where you are!&body=Hi, I wanna share my position with you, just click on this Findya link and show your friends where you are : "+<?php echo $_POST['url'];?>+"." data-role="button" data-theme="b" data-corners="false" rel="external">Mail</a></div>
-					<div class="ui-block-b"><a id="copy" href="#" data-role="button" data-theme="b" data-corners="false" >Copy</a></div>
+				<div data-role="controlgroup" class="mycontrol-share">
+					<a id="share" href="#" data-role="button" data-theme="b">Facebook</a>
+					<a href="http://www.twitter.com/share?text=findya : follow me&url=<?php echo $_REQUEST['url']?>" data-role="button" data-theme="b">Tweet</a>
+					<a href="mailto:?subject=Tell your friend where you are!&body=Hi, I wanna share my position with you, just click on this Findya link and show your friends where you are : "+<?php echo $_POST['url'];?>+"." data-role="button" data-theme="b">Mail</a>
 				</div>
 			</div>
 		</div>
