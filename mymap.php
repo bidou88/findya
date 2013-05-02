@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
 	<script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
 
-	<script src="http://ogo.heig-vd.ch:8000/socket.io/socket.io.js"></script>
+	<script src="http://localhost:8000/socket.io/socket.io.js"></script>
 
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 
@@ -66,7 +66,7 @@
 
 			$.when(loadMap()).done(function() {
 
-				socket = io.connect("http://ogo.heig-vd.ch", {port: 8000, transports: ["websocket"]});
+				socket = io.connect("http://localhost", {port: 8000, transports: ["websocket"]});
 
 				setEventHandlers();
 			});
@@ -293,21 +293,40 @@
 		
 		function showPopup(data, type) {
 
-			//Création du popup
-		    var $popup = $("<div/>").popup({
-		        dismissible : false,
-		        theme : "a",
-		        overlyaTheme : "a",
-		        transition : "fade"
+			// //Création du popup
+		    var popup = $("<div/>").popup({
+		        dismissible : true,
+		        corners : false,
+		        shadow : false,
+		        tolerance: "42,0,0,0"
 		    }).on("popupafterclose", function() {
 		        $(this).remove();
 		    });
 
+		    if(type) {
+		    	var msg = $("<p/>", {text : data.name+" is connected."});
+		    	var color = "#66FF66";
+			    popup.click(function() {
+		    		map.panTo(data.latLng);
+		    	});
+		    } else {
+		    	var msg = $("<p/>", {text : data.name+" disconnected."});
+		    	var color = "#FF0000";
+		    }
 
 		    //Message
-		    $("<p/>", {text : data.name+" is connected."}).appendTo($popup);
+		    msg.css({"display" : "block", "text-align" : "center", "color" : "#000000"});
+		    msg.appendTo(popup);
 
-		    $popup.popup("open").trigger("create");
+		    popup.css({"opacity": 0.60, "width": $(window).width(), "background": color});
+		    popup.popup("open", {x: 0,y: 0, transition: "fade", positionTo: "origin"});
+		    
+			var def = $.Deferred();
+			setTimeout(def.resolve, 3000);
+
+		    def.done(function() {
+    			popup.fadeOut("slow");
+			});
 		}
 
 	</script>
