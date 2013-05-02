@@ -40,6 +40,7 @@
 			lng,
 			personId,
 			personName,
+			personImage,
 			markers = [], //Tableau de marqueurs
 			persons = [], //Tableau de personnes sur la map
 			mapPM = {}; //Hashmap de personnes et de marqueurs
@@ -212,9 +213,16 @@
 		function login() {
 			FB.login(function(response) {
 			    if (response.authResponse) {
-			        // connected
+			        FB.api('/me', function(response) {
+						personName = response.name;
+						FB.api('/me/picture', function(response) {
+							personImage = response.data.url;
+							init();
+						});
+						//init();
+					});
 			    } else {
-			        // cancelled
+			        init();
 			    }
 		    });
 		}
@@ -233,7 +241,11 @@
 		    	// connected
 		    	FB.api('/me', function(response) {
 					personName = response.name;
-					init();
+					FB.api('/me/picture', function(response) {
+						personImage = response.data.url;
+						init();
+					});
+					//init();
 				});
 			} else if (response.status === 'not_authorized') {
 		    	// not_authorized
