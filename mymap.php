@@ -125,9 +125,9 @@
 		function onPersonsOnMap(data) {
 			console.log("Add person on map");
 
-			var newLatLng = new L.LatLng(data.latitude, data.longitude);
-			var marker = new L.Marker(newLatLng).bindLabel(data.name, { noHide: true }).addTo(map).showLabel();
-			markers.push(marker);
+			persons.push(data.id);
+
+			onUpdateLocation(data);
 		};
 
 		function onNewPerson(data) {
