@@ -100,20 +100,17 @@
 		</div>
 
 		<div data-role="content">
-					<?php 
-						if(isset($_REQUEST['url'])) { 
-
-							?><div id="superlink"><a id="link" href="<?php echo $_REQUEST['url']?>"><?php echo $_REQUEST['url']; ?></a></div><?php
-						} else {
-							header('HTTP/1.0 404 Not Found');
-						}
-					?>
-				</a>
-				<div data-role="controlgroup" class="mycontrol-share">
-					<a id="share" href="#" data-role="button" data-theme="b">Facebook</a>
-					<a href="http://www.twitter.com/share?text=findya : follow me&url=<?php echo $_REQUEST['url']?>" data-role="button" data-theme="b">Tweet</a>
-					<a href="mailto:?subject=Tell your friend where you are!&body=Hi, I wanna share my position with you, just click on this Findya link and show your friends where you are : "+<?php echo $_POST['url'];?>+"." data-role="button" data-theme="b">Mail</a>
-				</div>
+			<?php 
+				if(isset($_REQUEST['url'])) { 
+					?><div id="superlink"><a id="link" href="<?php echo $_REQUEST['url']?>"><?php echo $_REQUEST['url']; ?></a></div><?php
+				} else {
+					header('HTTP/1.0 404 Not Found');
+				}
+			?>
+			<div data-role="controlgroup" class="mycontrol-share">
+				<a id="share" href="#" data-role="button" data-theme="b">Facebook</a>
+				<a href="http://www.twitter.com/share?text=findya : follow me&url=<?php echo $_REQUEST['url']?>" data-role="button" data-theme="b">Tweet</a>
+				<a href="mailto:?subject=Tell your friend where you are!&body=Hi, I wanna share my position with you, just click on this Findya link and show your friends where you are : "+<?php echo $_POST['url'];?>+"." data-role="button" data-theme="b">Mail</a>
 			</div>
 		</div>
 			
