@@ -10,7 +10,7 @@
 
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-	<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>w
+	<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
 
 	<link rel="stylesheet" href="css/style.css" />
 	<link rel="stylesheet" href="css/style_map.css" />
@@ -55,7 +55,7 @@
 				}
 			?>
 
-			init();
+			//init();
 		});
 
 		function init() {
@@ -87,28 +87,27 @@
 
 			// Player removed message received
 			socket.on("remove person", onRemovePerson);
+
+			$('#btn_ok').click(function() {
+				$( "#myDialog" ).dialog( "close" );
+				personName = $('#name').val();
+				socket.emit("new person", {mapId: mapId, name: personName});
+				map.locate({setView: true, maxZoom: 15, watch: true, enableHighAccuracy: true});
+			});
+
 		};
 
 		// Socket connected
 		function onSocketConnected() {
 			console.log("Connected to socket server");
+			console.log(personName);
+			if(!personName) {
+				$.mobile.changePage( "#myDialog", { role: "dialog" } );
+			} else {
+				socket.emit("new person", {mapId: mapId, name: personName});
+				map.locate({setView: true, maxZoom: 15, watch: true, enableHighAccuracy: true});
+			}		
 
-			$('<div>').simpledialog2({
-				mode: 'button',
-				headerText: 'Findya',
-				headerClose: false,
-				buttonPrompt: 'Hey! My name is...',
-				buttonInput: true,
-				buttons : {
-				  'OK': {
-				    click: function () {
-				    	personName = $.mobile.sdLastInput;
-				    	socket.emit("new person", {mapId: mapId, name: personName});
-				    	map.locate({setView: true, maxZoom: 15, watch: true, enableHighAccuracy: true});
-				    }
-				  },
-				}
-			});
 		};
 
 		// Socket disconnected
@@ -207,7 +206,7 @@
 			map.on('locationerror', onLocationError);
 		}
 
-		/*
+		
 		function login() {
 			FB.login(function(response) {
 			    if (response.authResponse) {
@@ -230,14 +229,16 @@
 	    FB.getLoginStatus(function(response) {
 			if (response.status === 'connected') {
 		    	// connected
-		    	alert('connected');
-		    	init();
+		    	FB.api('/me', function(response) {
+					personName = response.name;
+					init();
+				});
 			} else if (response.status === 'not_authorized') {
 		    	// not_authorized
-		    	login();
+		    	init();
 		  	} else {
 		    	// not_logged_in
-		    	login();
+		    	init();
 		  	}
 		});
 
@@ -251,7 +252,7 @@
 	     js.src = "//connect.facebook.net/fr_FR/all.js";
 	     ref.parentNode.insertBefore(js, ref);
 	   }(document));
-	*/
+	
 	</script>
 
 	<div data-role="page" id="home">
@@ -266,5 +267,15 @@
 		</div>
 			
 	</div>
+
+	<div data-role="page" id="myDialog" data-close-btn="none">
+	  <div data-role="header">
+	    <h2>Nickname</h2>
+	  </div>
+	  <div data-role="content">
+	    <p><input type="text" name="name" id="name" value=""></p>
+	    <a id="btn_ok" href="#" data-role="button" data-theme="b">Go to map</a>
+	</div>
+</div>
 </body>
 </html>

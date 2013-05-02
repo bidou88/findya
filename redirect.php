@@ -68,7 +68,9 @@
 	function login() {
 		FB.login(function(response) {
 		    if (response.authResponse) {
-		        
+		        if(urlParams['request_ids']) {
+	    			processIncomingRequest();
+	    		}
 		    } else {
 		        // cancelled
 		    }
@@ -94,9 +96,9 @@
 	    		processIncomingRequest();
 	    	}
 		} else if (response.status === 'not_authorized') {
-	    	// not_authorized
+	    	login();
 	  	} else {
-	    	// not_logged_in
+	    	login();
 	  	}
 	});
 
