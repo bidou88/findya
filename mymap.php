@@ -18,7 +18,9 @@
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
 	<script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
 
-	<script src="http://localhost:8000/socket.io/socket.io.js"></script>
+	<script src="http://ogo.heig-vd.ch:8000/socket.io/socket.io.js"></script>
+
+	<link rel="stylesheet" href="../css/font-awesome.min.css">
 
 	<script src="js/leaflet.label.js"></script>
 	<link rel="stylesheet" href="css/leaflet.label.css"/>
@@ -63,7 +65,7 @@
 
 			$.when(loadMap()).done(function() {
 
-				socket = io.connect("localhost", {port: 8000, transports: ["websocket"]});
+				socket = io.connect("http://ogo.heig-vd.ch", {port: 8000, transports: ["websocket"]});
 
 				setEventHandlers();
 			});
@@ -162,6 +164,7 @@
   						color: 'blue'
 					});
 				}
+
 				var marker = new L.Marker(newLatLng, {icon: icon}).bindLabel(data.name).addTo(map);
 				markers.push(marker);
 				mapPM[data.id] = marker;
