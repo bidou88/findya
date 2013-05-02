@@ -4,13 +4,13 @@
 	<meta charset="utf-8">
 	<title>findya</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
 	<link rel="apple-touch-icon" sizes="144x144" href="img/apple/apple-touch-icon-144x144.png" />
 	<link rel="apple-touch-startup-image" href="img/apple/startup-320x460.png" />
 
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-	<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>w
 
 	<link rel="stylesheet" href="css/style.css" />
 	<link rel="stylesheet" href="css/style_map.css" />
@@ -22,7 +22,7 @@
 		var socket;
 	</script>
 
-	<script src="http://ogo.heig-vd.ch:8000/:8000/socket.io/socket.io.js"></script>
+	<script src="http://ogo.heig-vd.ch:8000/socket.io/socket.io.js"></script>
 
 	<script src="js/simpledialog.min.js"></script>
 	<link rel="stylsheet" href="css/simpledialog.css" />
@@ -66,7 +66,7 @@
 			
 
 			$.when(loadMap()).done(function() {
-				socket = io.connect("http://10.192.82.108", {port: 8000, transports: ["websocket"]});
+				socket = io.connect("http://ogo.heig-vd.ch", {port: 8000, transports: ["websocket"]});
 				setEventHandlers();
 			});
 		}
