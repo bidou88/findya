@@ -64,7 +64,7 @@ function onNewPerson(data) {
 	for (var i = 0; i < persons.length; i++) {
 		if(persons[i].getMapId()==data.mapId && persons[i].id != this.id) {
 			util.log("Server envoi to " +newPerson.id+" - "+newPerson.getName()+" sur map "+data.mapId+ " l'ID suivant "+persons[i].id);
-			this.emit("add person", {mapId: persons[i].getMapId(), id: persons[i].id, name: persons[i].getName(), img: persons[il.getImg(), atitude: persons[i].getLatitude(), longitude: persons[i].getLongitude()});
+			this.emit("add person", {mapId: persons[i].getMapId(), id: persons[i].id, name: persons[i].getName(), img: persons[i].getImg(), latitude: persons[i].getLatitude(), longitude: persons[i].getLongitude()});
 		}
 	}
 

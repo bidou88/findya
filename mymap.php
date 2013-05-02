@@ -107,7 +107,7 @@
 			if(!personName) {
 				$.mobile.changePage( "#myDialog", { role: "dialog" } );
 			} else {
-				socket.emit("new person", {mapId: mapId, name: personName});
+				socket.emit("new person", {mapId: mapId, name: personName, img: personImage});
 				map.locate({setView: true, maxZoom: 15, watch: true, enableHighAccuracy: true});
 			}		
 
@@ -154,19 +154,21 @@
 				marker.setLatLng(newLatLng);
 			} else {
 
-				//Modification du plug-ing AwesomeMakers pour insérer une image dans le marker
-				var icon = L.FacebookMarkers.icon ({
-					icon: data.img, 
-  					color: 'red',
-  					labelAnchor: [8, -15]
-				});
-
-				// var icon = L.AwesomeMarkers.icon ({
-				// 	icon: 'user', 
-				// 		color: 'blue',
-				// 		labelAnchor: [8, -15]
-				// });
-
+				if(data.img == undefined) {
+					var icon = L.AwesomeMarkers.icon ({
+						icon: 'user', 
+						color: 'blue',
+				 		labelAnchor: [8, -15]
+					});
+				} else {
+					//Modification du plug-ing AwesomeMakers pour insérer une image dans le marker
+					var icon = L.FacebookMarkers.icon ({
+						icon: data.img, 
+	  					color: 'blue',
+	  					labelAnchor: [8, -15]
+					});
+				}
+				
 				var marker = new L.Marker(newLatLng, {icon: icon}).bindLabel(data.name).addTo(map);
 				markers.push(marker);
 				mapPM[data.id] = marker;
@@ -189,13 +191,20 @@
 				socket.emit("update location", {latitude: lat, longitude: lng});
 				var newLatLng = new L.LatLng(lat, lng);
 
-				//Modification du plug-ing AwesomeMakers pour insérer une image dans le marker
-				var icon = L.FacebookMarkers.icon ({
-					icon: personImage, 
-  					color: 'red',
-  					labelAnchor: [8, -15]
-				});
-
+				if(personImage == undefined) {
+					var icon = L.AwesomeMarkers.icon ({
+						icon: 'user', 
+						color: 'blue',
+				 		labelAnchor: [8, -15]
+					});
+				} else {
+					//Modification du plug-ing AwesomeMakers pour insérer une image dans le marker
+					var icon = L.FacebookMarkers.icon ({
+						icon: personImage, 
+	  					color: 'red',
+	  					labelAnchor: [8, -15]
+					});
+				}
 
 				if(personId in mapPM) {
 					console.log("Marker exists, do update");
