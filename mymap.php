@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
 	<script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
 
-	<script src="http://localhost:8000/socket.io/socket.io.js"></script>
+	<script src="http://ogo.heig-vd.ch:8000/socket.io/socket.io.js"></script>
 
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 
@@ -66,7 +66,7 @@
 
 			$.when(loadMap()).done(function() {
 
-				socket = io.connect("http://localhost", {port: 8000, transports: ["websocket"]});
+				socket = io.connect("http://ogo.heig-vd.ch", {port: 8000, transports: ["websocket"]});
 
 				setEventHandlers();
 			});
@@ -95,7 +95,7 @@
 				$( "#myDialog" ).dialog( "close" );
 				personName = $('#name').val();
 				socket.emit("new person", {mapId: mapId, name: personName, img: personImage});
-				map.locate({setView: true, maxZoom: 15, watch: true, enableHighAccuracy: true});
+				map.locate({setView: true, maxZoom: 15, watch: true});
 			});
 
 		};
@@ -103,13 +103,12 @@
 		// Socket connected
 		function onSocketConnected() {
 			console.log("Connected to socket server");
-			console.log(personName);
-			
+
 			if(!personName) {
 				$.mobile.changePage( "#myDialog", { role: "dialog" } );
 			} else {
 				socket.emit("new person", {mapId: mapId, name: personName, img: personImage});
-				map.locate({setView: true, maxZoom: 15, watch: true, enableHighAccuracy: true});
+				map.locate({setView: true, maxZoom: 15, watch: true});
 			}		
 
 		};
@@ -126,13 +125,13 @@
 
 			persons.push(data.id);
 
-			onUpdateLocation(data);
+			drawMarker(data);
+
+			//onUpdateLocation(data);
 		};
 
 		function onNewPerson(data) {
 			console.log("New person connected: "+data.id);
-
-			showPopup(data, 1);
 
 			persons.push(data.id);
 		};
@@ -159,24 +158,8 @@
 				marker.setLatLng(newLatLng);
 			} else {
 
-				if(data.img == undefined) {
-					var icon = L.AwesomeMarkers.icon ({
-						icon: 'user', 
-						color: 'blue',
-				 		labelAnchor: [8, -15]
-					});
-				} else {
-					//Modification du plug-ing AwesomeMakers pour insérer une image dans le marker
-					var icon = L.FacebookMarkers.icon ({
-						icon: data.img, 
-	  					color: 'blue',
-	  					labelAnchor: [8, -15]
-					});
-				}
-				
-				var marker = new L.Marker(newLatLng, {icon: icon}).bindLabel(data.name).addTo(map);
-				markers.push(marker);
-				mapPM[data.id] = marker;
+				showPopup(data, 1);
+				drawMarker(data);
 			}
 		};
 
@@ -228,12 +211,35 @@
 			map.on('locationfound', onLocationFound);
 
 			function onLocationError(e) {
-			    alert(e.message);
+			    console.log("Error on location : "+e.message);
 			}
 
 			map.on('locationerror', onLocationError);
 		}
 
+		function drawMarker(data) {
+
+			var newLatLng = new L.LatLng(data.latitude, data.longitude);
+
+			if(data.img == undefined) {
+					var icon = L.AwesomeMarkers.icon ({
+						icon: 'user', 
+						color: 'blue',
+				 		labelAnchor: [8, -15]
+					});
+			} else {
+				//Modification du plug-ing AwesomeMakers pour insérer une image dans le marker
+				var icon = L.FacebookMarkers.icon ({
+					icon: data.img, 
+  					color: 'blue',
+  					labelAnchor: [8, -15]
+				});
+			}
+			
+			var marker = new L.Marker(newLatLng, {icon: icon}).bindLabel(data.name).addTo(map);
+			markers.push(marker);
+			mapPM[data.id] = marker;
+		}
 		
 		function login() {
 			FB.login(function(response) {
@@ -299,7 +305,7 @@
 		        dismissible : true,
 		        corners : false,
 		        shadow : false,
-		        tolerance: "42,0,0,0"
+		        tolerance: "40,0,0,0"
 		    }).on("popupafterclose", function() {
 		        $(this).remove();
 		    });
@@ -307,19 +313,27 @@
 		    if(type) {
 		    	var msg = $("<p/>", {text : data.name+" is connected."});
 		    	var color = "#66FF66";
+
 			    popup.click(function() {
-		    		map.panTo(data.latLng);
-		    	});
+
+			    	lat = data.latitude;
+					lng = data.longitude;
+
+					console.log(lat);
+					console.log(lng);
+
+			    	map.panTo(new L.LatLng(lat, lng));
+			    });
 		    } else {
 		    	var msg = $("<p/>", {text : data.name+" disconnected."});
 		    	var color = "#FF0000";
 		    }
 
 		    //Message
-		    msg.css({"display" : "block", "text-align" : "center", "color" : "#000000"});
+		    msg.css({"display" : "block", "text-align" : "center", "color" : "#000000 !important"});
 		    msg.appendTo(popup);
 
-		    popup.css({"opacity": 0.60, "width": $(window).width(), "background": color});
+		    popup.css({"opacity": 0.60, "width": $(window).width(), "background": color, "color" : "#000000 !important"});
 		    popup.popup("open", {x: 0,y: 0, transition: "fade", positionTo: "origin"});
 		    
 			var def = $.Deferred();
