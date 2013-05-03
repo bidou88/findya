@@ -104,6 +104,7 @@
 		function onSocketConnected() {
 			console.log("Connected to socket server");
 			console.log(personName);
+			
 			if(!personName) {
 				$.mobile.changePage( "#myDialog", { role: "dialog" } );
 			} else {

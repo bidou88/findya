@@ -78,11 +78,17 @@ function onUpdateLocation(data) {
 	lng = data.longitude;
 
 	var person = personById(this.id);
-	person.setLatitude(lat);
-	person.setLongitude(lng);
 
-	util.log("Server updated location of "+this.id+" - "+person.getName()+" with lat = "+person.getLatitude()+" lng = "+person.getLongitude());
-	this.broadcast.emit("update location", {mapId: person.getMapId(), id: person.id, name: person.getName(), img: person.getImg(), latitude: person.getLatitude(), longitude: person.getLongitude()});
+	if(person != false) {
+		person.setLatitude(lat);
+		person.setLongitude(lng);
+
+		util.log("Server updated location of "+this.id+" - "+person.getName()+" with lat = "+person.getLatitude()+" lng = "+person.getLongitude());
+		this.broadcast.emit("update location", {mapId: person.getMapId(), id: person.id, name: person.getName(), img: person.getImg(), latitude: person.getLatitude(), longitude: person.getLongitude()});
+	} else {
+		util.log("Client disconnected untimely.");
+	}
+	
 };
 
 function onRemovePerson(data) {
